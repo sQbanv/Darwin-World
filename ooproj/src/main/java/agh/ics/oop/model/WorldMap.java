@@ -1,5 +1,15 @@
 package agh.ics.oop.model;
 
-public interface WorldMap extends MoveValidator{
+import java.util.Optional;
+import java.util.UUID;
 
+public interface WorldMap extends MoveValidator{
+    UUID getID();
+    void placeAnimal(Animal animal);
+    void placePlant(Plant plant);
+    Optional<MapElement> objectAt(Vector2d position);
+    Vector2d lowerLeft();
+    Vector2d upperRight();
+    void addListener(MapChangeListener listener);
+    void mapChanged();
 }

@@ -16,4 +16,9 @@ public class Plant implements MapElement{
     public String toString() {
         return "*";
     }
+
+    @Override
+    public String getMapRepresentation(){
+        return "#448021";
+    }
 }

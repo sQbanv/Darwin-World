@@ -3,21 +3,18 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.model.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 import java.util.Optional;
 
 public class SimulationViewPresenter implements MapChangeListener{
-    private static final double CELL_WIDTH = 35;
-    private static final double CELL_HEIGHT = 35;
+    private static final int CELL_WIDTH = 20;
+    private static final int CELL_HEIGHT = 20;
 
     @FXML
     private GridPane mapGrid;
@@ -40,6 +37,9 @@ public class SimulationViewPresenter implements MapChangeListener{
 
         for (int x = 0; x <= numCols; x++){
             for (int y = 0; y <= numRows; y++){
+                Rectangle rectangle = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
+                rectangle.setFill(Paint.valueOf("#81f041"));
+                mapGrid.add(rectangle, x, y);
                 drawObject(new Vector2d(x,y));
             }
         }
@@ -48,13 +48,9 @@ public class SimulationViewPresenter implements MapChangeListener{
     private void drawObject(Vector2d currentPosition) {
         Optional<MapElement> worldElement = worldMap.objectAt(currentPosition);
         if(worldElement.isPresent()){
-            Label label = new Label(worldElement.get().toString());
-            GridPane.setHalignment(label, HPos.CENTER);
-            mapGrid.add(label, currentPosition.getX(), currentPosition.getY());
-        } else {
-            Label label = new Label(" ");
-            GridPane.setHalignment(label, HPos.CENTER);
-            mapGrid.add(label, currentPosition.getX(), currentPosition.getY());
+                Circle circle = new Circle((double) CELL_WIDTH /2);
+                circle.setFill(Paint.valueOf(worldElement.get().getMapRepresentation()));
+                mapGrid.add(circle, currentPosition.getX(), currentPosition.getY());
         }
     }
 

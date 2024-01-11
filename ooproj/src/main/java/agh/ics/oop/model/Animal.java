@@ -8,6 +8,7 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
     private final GenotypeFactory genotypeFactory;
     private Vector2d position;
     private int energy;
+    private int maxEnergy;
     private MapDirection direction;
     private final Genotype genotype;
     private LinkedList<Animal> children = new LinkedList<>();
@@ -17,6 +18,7 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
     public Animal(Vector2d position, int energy, Genotype genotype, GenotypeFactory genotypeFactory){
         this.position = position;
         this.energy = energy;
+        this.maxEnergy = energy;
         this.genotype = genotype;
         this.genotypeFactory = genotypeFactory;
         direction = randomDirection();
@@ -73,5 +75,21 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
     @Override
     public String toString() {
         return direction.toString();
+    }
+
+    @Override
+    public String getMapRepresentation(){
+        double energyPercentage = (double) energy /maxEnergy;
+        if(energyPercentage == 1){
+            return "#573011";
+        } else if(energyPercentage >= 0.75){
+            return "#754a28";
+        } else if(energyPercentage >= 0.5){
+            return "#966b48";
+        } else if(energyPercentage >= 0.25){
+            return "#b58f70";
+        } else {
+            return "#d4b8a1";
+        }
     }
 }

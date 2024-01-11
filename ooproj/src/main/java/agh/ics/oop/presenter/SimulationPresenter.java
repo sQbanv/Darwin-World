@@ -11,9 +11,12 @@ import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.UUID;
 
 
@@ -46,6 +49,77 @@ public class SimulationPresenter{
     private ChoiceBox<String> mutationTypeField;
     @FXML
     private Spinner<Integer> genotypeLengthField;
+
+    private Properties properties = new Properties();
+    private String propertiesPath = "src/main/resources/config/config.properties";
+
+
+    @FXML
+    public void initialize(){
+        loadConfig();
+        configureSpinnerListener();
+    }
+
+    private void configureSpinnerListener(){
+        minMutationCountField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue > maxMutationCountField.getValue()){
+                minMutationCountField.getValueFactory().setValue(oldValue);
+            }
+        });
+        maxMutationCountField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue < minMutationCountField.getValue()){
+                maxMutationCountField.getValueFactory().setValue(oldValue);
+            }
+        }));
+    }
+
+    private void loadConfig(){
+        try(FileInputStream fileInputStream = new FileInputStream(propertiesPath)){
+            properties.load(fileInputStream);
+
+            mapHeightField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("mapHeightField")));
+            mapWidthField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("mapWidthField")));
+            mapTypeField.setValue(properties.getProperty("mapTypeField"));
+            initialPlantCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("initialPlantCountField")));
+            plantEnergyField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("plantEnergyField")));
+            numberOfPlantsGrowingPerDayField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("numberOfPlantsGrowingPerDayField")));
+            initialAnimalCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("initialAnimalCountField")));
+            initialAnimalEnergyField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("initialAnimalEnergyField")));
+            readyToReproduceEnergyField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("readyToReproduceEnergyField")));
+            reproduceEnergyLossField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("reproduceEnergyLossField")));
+            minMutationCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("minMutationCountField")));
+            maxMutationCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("maxMutationCountField")));
+            mutationTypeField.setValue(properties.getProperty("mutationTypeField"));
+            genotypeLengthField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("genotypeLengthField")));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void saveConfig(){
+        properties.setProperty("mapHeightField", String.valueOf(mapHeightField.getValue()));
+        properties.setProperty("mapWidthField", String.valueOf(mapWidthField.getValue()));
+        properties.setProperty("mapTypeField", mapTypeField.getValue());
+        properties.setProperty("initialPlantCountField", String.valueOf(initialPlantCountField.getValue()));
+        properties.setProperty("plantEnergyField", String.valueOf(plantEnergyField.getValue()));
+        properties.setProperty("numberOfPlantsGrowingPerDayField", String.valueOf(numberOfPlantsGrowingPerDayField.getValue()));
+        properties.setProperty("initialAnimalCountField", String.valueOf(initialAnimalCountField.getValue()));
+        properties.setProperty("initialAnimalEnergyField", String.valueOf(initialAnimalEnergyField.getValue()));
+        properties.setProperty("readyToReproduceEnergyField", String.valueOf(readyToReproduceEnergyField.getValue()));
+        properties.setProperty("reproduceEnergyLossField", String.valueOf(reproduceEnergyLossField.getValue()));
+        properties.setProperty("minMutationCountField", String.valueOf(minMutationCountField.getValue()));
+        properties.setProperty("maxMutationCountField", String.valueOf(maxMutationCountField.getValue()));
+        properties.setProperty("mutationTypeField", mutationTypeField.getValue());
+        properties.setProperty("genotypeLengthField", String.valueOf(genotypeLengthField.getValue()));
+
+        try(FileOutputStream fileOutputStream = new FileOutputStream(propertiesPath)){
+            properties.store(fileOutputStream, null);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     public void onSimulationStartClicked() throws IOException {

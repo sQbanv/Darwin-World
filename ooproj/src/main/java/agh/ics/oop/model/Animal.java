@@ -1,15 +1,30 @@
 package agh.ics.oop.model;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
 public class Animal implements MapElement,Movable,Eatable,Reproducible{
+    private final GenotypeFactory genotypeFactory;
     private Vector2d position;
     private int energy;
     private MapDirection direction;
     private final Genotype genotype;
+    private LinkedList<Animal> children = new LinkedList<>();
+    private int days = 0;
+    private final Random random = new Random();
 
-    public Animal(Vector2d position, int energy, Genotype genotype){
+    public Animal(Vector2d position, int energy, Genotype genotype, GenotypeFactory genotypeFactory){
         this.position = position;
         this.energy = energy;
         this.genotype = genotype;
+        this.genotypeFactory = genotypeFactory;
+        direction = randomDirection();
+    }
+
+    private MapDirection randomDirection(){
+        List<MapDirection> directions = List.of(MapDirection.values());
+        return directions.get(random.nextInt(directions.size()));
     }
 
     public MapDirection getDirection() {
@@ -34,14 +49,29 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
         return position;
     }
 
+    public int getDays(){
+        return days;
+    }
+
     @Override
     public void move() {
         //TODO
     }
 
     @Override
-    public Animal reproduce(Animal animal) {
-        //TODO
-        return null;
+    public Animal reproduce(Animal animal, int minMutation, int maxMutation) {
+        Genotype childGenotype = genotypeFactory.createChildGenotype(genotype.getGenes().size(), minMutation, maxMutation, this, animal);
+        int childEnergy = 100; //TODO
+        Animal child = new Animal(position, childEnergy, childGenotype, genotypeFactory);
+
+        children.add(child);
+        animal.children.add(child);
+
+        return child;
+    }
+
+    @Override
+    public String toString() {
+        return direction.toString();
     }
 }

@@ -1,8 +1,10 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.SimulationConfigurator;
+
 public class GlobeMap extends AbstractWorldMap{
-    public GlobeMap(int width, int height) {
-        super(width, height);
+    public GlobeMap(SimulationConfigurator configurator){
+        super(configurator);
     }
 
     @Override

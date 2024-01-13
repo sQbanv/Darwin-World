@@ -8,7 +8,7 @@ public class GlobeMap extends AbstractWorldMap{
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
-        return false;
+    public void move() {
+        super.move();
     }
 }

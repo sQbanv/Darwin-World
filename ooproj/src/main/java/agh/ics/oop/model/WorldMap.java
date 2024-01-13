@@ -3,7 +3,7 @@ package agh.ics.oop.model;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface WorldMap extends MoveValidator{
+public interface WorldMap{
     UUID getID();
     void placeAnimal(Animal animal);
     void placePlant(Plant plant);
@@ -12,4 +12,9 @@ public interface WorldMap extends MoveValidator{
     Vector2d upperRight();
     void addListener(MapChangeListener listener);
     void mapChanged();
+    void generatePlants(int plantsNumber);
+    void removeDead();
+    void move();
+    void eat();
+    void reproduce();
 }

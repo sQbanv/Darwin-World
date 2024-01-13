@@ -14,7 +14,11 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected final Vector2d upperRight;
     protected final LinkedList<MapChangeListener> mapChangeListeners = new LinkedList<>();
     protected final Random random = new Random();
-
+    protected Set<Vector2d> tilesWithAnimals = new HashSet<>();
+    protected List<Vector2d> tilesWithoutPlantEquator = new LinkedList<>();
+    protected List<Vector2d> tilesWithoutPlantStandard = new LinkedList<>();
+    protected List<Vector2d> tilesWithPlantEquator = new LinkedList<>();
+    protected List<Vector2d> tilesWithPlantStandard = new LinkedList<>();
     public AbstractWorldMap(SimulationConfigurator configurator){
         uuid = UUID.randomUUID();
         this.configurator = configurator;
@@ -25,14 +29,28 @@ public abstract class AbstractWorldMap implements WorldMap{
     }
 
     protected void generateTiles(){
+        int equatorStart = configurator.mapHeight()*2/5;
+        int equatorEnd = configurator.mapHeight()-equatorStart-1;
         for(int x = 0; x <= upperRight.getX(); x++){
             for(int y = 0; y <= upperRight.getY(); y++){
                 Vector2d position = new Vector2d(x,y);
-                mapTiles.put(position, new RegularTile(position));
+                RegularTile tile = new RegularTile(position,lowerLeft,upperRight);
+                mapTiles.put(position, tile);
+                if(position.getY()>=equatorStart && position.getY()<=equatorEnd){
+                    tilesWithoutPlantEquator.add(position);
+                }
+                else{
+                    tilesWithoutPlantStandard.add(position);
+                }
             }
         }
+        addNeighbors();
+    }
 
-        //TODO NeighbourTiles
+    protected void addNeighbors(){
+        for (Vector2d key : mapTiles.keySet()) {
+            mapTiles.get(key).addNeighbourTile(mapTiles,lowerLeft,upperRight);
+        }
     }
 
     protected void generateAnimals(int initialAnimalCount){
@@ -41,17 +59,81 @@ public abstract class AbstractWorldMap implements WorldMap{
             Vector2d position = new Vector2d(random.nextInt(configurator.mapWidth()), random.nextInt(configurator.mapHeight()));
             Animal newAnimal = new Animal(position, configurator.initialAnimalEnergy(), genotype, configurator.mutationType());
             this.placeAnimal(newAnimal);
+            tilesWithAnimals.add(position);
         }
     }
 
-    protected void generatePlants(int initialPlantCount){
-        for(int i=0; i<initialPlantCount; i++){
-            Vector2d position = PreferredPositionGenerator.generatePosition(configurator.mapWidth(), configurator.mapHeight());
-            while(mapTiles.get(position).getPlant().isPresent()){
-                position = PreferredPositionGenerator.generatePosition(configurator.mapWidth(), configurator.mapHeight());
+    public void generatePlants(int initialPlantCount){
+        for(int i=0; i<initialPlantCount && (!tilesWithoutPlantEquator.isEmpty() || !tilesWithoutPlantStandard.isEmpty());){
+            if(random.nextInt(100)<80 && !tilesWithoutPlantEquator.isEmpty()){
+                int idx = random.nextInt(tilesWithoutPlantEquator.size());
+                Vector2d position = tilesWithoutPlantEquator.get(idx);
+                Plant plant = new Plant(position, configurator.plantEnergy());
+                mapTiles.get(position).addPlant(plant);
+                tilesWithPlantEquator.add(position);
+                tilesWithoutPlantEquator.remove(idx);
+                i++;
+            } else if (!tilesWithoutPlantStandard.isEmpty()) {
+                int idx = random.nextInt(tilesWithoutPlantStandard.size());
+                Vector2d position = tilesWithoutPlantStandard.get(idx);
+                Plant plant = new Plant(position, configurator.plantEnergy());
+                mapTiles.get(position).addPlant(plant);
+                tilesWithPlantStandard.add(position);
+                tilesWithoutPlantStandard.remove(idx);
+                i++;
             }
-            Plant newPlant = new Plant(position);
-            this.placePlant(newPlant);
+        }
+    }
+
+    public void removeDead() {
+        Iterator<Animal> intetor = animals.iterator();
+        while (intetor.hasNext()){
+            Animal animal = intetor.next();
+            if(animal.getEnergy()<=0){
+                mapTiles.get(animal.getPosition()).removeAnimal(animal);
+                intetor.remove();
+            }
+        }
+    }
+
+    public void eat() {
+        for(Vector2d position : tilesWithAnimals){
+            if(tilesWithPlantStandard.contains(position)){
+                mapTiles.get(position).eat();
+                tilesWithPlantStandard.remove(position);
+                tilesWithoutPlantStandard.add(position);
+            }
+            if(tilesWithPlantEquator.contains(position)){
+                mapTiles.get(position).eat();
+                tilesWithPlantEquator.remove(position);
+                tilesWithoutPlantEquator.add(position);
+            }
+        }
+    }
+
+    public void reproduce() {
+        for(Vector2d position : tilesWithAnimals){
+            Animal child = mapTiles.get(position).reproduce(configurator.readyToReproduceEnergy(),configurator.reproduceEnergyLoss(),configurator.minMutationCount(),configurator.maxMutationCount());
+            if(child!=null){
+                animals.add(child);
+            }
+        }
+    }
+
+    public void move() {
+        Iterator<Animal> iterator = animals.iterator();
+        while (iterator.hasNext()){
+            Animal animal = iterator.next();
+            Vector2d oldPosition = animal.getPosition();
+            animal.move(mapTiles.get(oldPosition));
+            if(animal.getPosition()!=oldPosition){
+                mapTiles.get(oldPosition).removeAnimal(animal);
+                mapTiles.get(animal.getPosition()).addAnimal(animal);
+                if(mapTiles.get(oldPosition).getAnimal().isEmpty()){
+                    tilesWithAnimals.remove(oldPosition);
+                }
+                tilesWithAnimals.add(animal.getPosition());
+            }
         }
     }
 

@@ -19,6 +19,18 @@ public class Simulation implements Runnable{
 
     @Override
     public void run() {
-
+        for(int i=0;i<20;i++){
+            map.removeDead();
+            map.move();
+            map.eat();
+            map.reproduce();
+            map.generatePlants(configurator.numberOfPlantsGrowingPerDay());
+            try {
+                Thread.sleep(500);
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+            map.mapChanged();
+        }
     }
 }

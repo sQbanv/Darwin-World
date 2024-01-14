@@ -9,17 +9,22 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
 
 import java.util.Optional;
 
 public class SimulationViewPresenter implements MapChangeListener{
     private static final int CELL_WIDTH = 20;
     private static final int CELL_HEIGHT = 20;
+    private boolean isRunning = true;
 
     @FXML
     private GridPane mapGrid;
+    @FXML
+    private Button pauseResume;
 
     private WorldMap worldMap;
+    private SimulationEngine simulationEngine;
 
     public void drawMap(){
         clearGrid();
@@ -60,6 +65,18 @@ public class SimulationViewPresenter implements MapChangeListener{
         mapGrid.getRowConstraints().clear();
     }
 
+    public void pauseResumeSimulation(){
+        if(isRunning){
+            pauseResume.setText("Resume");
+            simulationEngine.pauseSimulation();
+            isRunning = false;
+        } else {
+            pauseResume.setText("Pause");
+            simulationEngine.resumeSimulation();
+            isRunning = true;
+        }
+    }
+
     @Override
     public void mapChanged(WorldMap map){
         Platform.runLater(() -> {
@@ -69,5 +86,9 @@ public class SimulationViewPresenter implements MapChangeListener{
 
     public void setWorldMap(WorldMap map) {
         this.worldMap = map;
+    }
+
+    public void setSimulationEngine(SimulationEngine simulationEngine){
+        this.simulationEngine = simulationEngine;
     }
 }

@@ -23,9 +23,6 @@ public abstract class AbstractWorldMap implements WorldMap{
         uuid = UUID.randomUUID();
         this.configurator = configurator;
         upperRight = new Vector2d(configurator.mapWidth() - 1,configurator.mapHeight() - 1);
-        generateTiles();
-        generateAnimals(configurator.initialAnimalCount());
-        generatePlants(configurator.initialPlantCount());
     }
 
     protected void generateTiles(){

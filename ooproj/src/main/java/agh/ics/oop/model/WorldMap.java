@@ -17,4 +17,5 @@ public interface WorldMap{
     void move();
     void eat();
     void reproduce();
+    void special();
 }

@@ -49,7 +49,7 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     protected void addNeighbors(){
         for (Vector2d key : mapTiles.keySet()) {
-            mapTiles.get(key).addNeighbourTile(mapTiles,lowerLeft,upperRight);
+            mapTiles.get(key).addNeighbourTile(mapTiles);
         }
     }
 

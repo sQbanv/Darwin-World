@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Vector;
 
 public interface Tile extends MoveValidator{
-    void addNeighbourTile(Map<Vector2d, Tile> map, Vector2d lowerLeft, Vector2d upperRight);
+    void addNeighbourTile(Map<Vector2d, Tile> map);
     void addAnimal(Animal animal);
     void addPlant(Plant plant);
     Vector2d getPosition();

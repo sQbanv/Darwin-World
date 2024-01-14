@@ -86,4 +86,9 @@ public class RegularGenom implements Genotype{
 
         genotype.set(position,newGen);
     }
+
+    @Override
+    public String toString() {
+        return genotype.toString() + currentGen;
+    }
 }

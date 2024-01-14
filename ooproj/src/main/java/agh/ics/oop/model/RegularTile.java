@@ -4,6 +4,8 @@ import java.util.*;
 
 public class RegularTile implements Tile{
     private final Vector2d position;
+    private final Vector2d lowerLeft;
+    private final Vector2d upperRight;
     private HashMap<Vector2d,Tile> neighbourTiles = new HashMap<>();
     private List<Animal> animals = new LinkedList<>();
     private List<Animal> twoBestAnimals = new ArrayList<>();
@@ -11,10 +13,13 @@ public class RegularTile implements Tile{
 
     public RegularTile(Vector2d position,Vector2d lowerLeft, Vector2d upperRight){
         this.position = position;
+        this.lowerLeft=lowerLeft;
+        this.upperRight=upperRight;
     }
 
     @Override
-    public void addNeighbourTile(Map<Vector2d, Tile> map, Vector2d lowerLeft, Vector2d upperRight){
+    public void addNeighbourTile(Map<Vector2d, Tile> map){
+        System.out.println(position);
         for(MapDirection direction: MapDirection.values()){
             Vector2d neighbor = position.add(direction.toUnitVector());
             if (neighbor.precedes(upperRight) && neighbor.follows(lowerLeft)){
@@ -45,6 +50,10 @@ public class RegularTile implements Tile{
                 neighbourTiles.put(positionC,map.get(positionC));
             }
         }
+        for(Vector2d key : neighbourTiles.keySet()){
+            System.out.print(neighbourTiles.get(key).getPosition());
+        }
+        System.out.println();
     }
 
     @Override
@@ -134,7 +143,6 @@ public class RegularTile implements Tile{
             if(animalA.getEnergy()>=readyToReproduce && animalB.getEnergy()>=readyToReproduce){
                 Animal child = animalA.reproduce(animalB,minMutationCount,maxMutationCount,reproduceLoss);
                 addAnimal(child);
-                System.out.println(child.getPosition());
                 return child;
             }
         }
@@ -143,7 +151,27 @@ public class RegularTile implements Tile{
 
     public void removeAnimal(Animal animal){
         animals.remove(animal);
-        //TODO
+        if(twoBestAnimals.remove(animal)){
+            findNewTwo();
+        }
+    }
+
+    private void findNewTwo(){
+        if(animals.size()>1){
+            Animal oneBest = twoBestAnimals.get(0);
+            Animal possibleAnimal = animals.get(0);
+            for(Animal animal : animals){
+                if(possibleAnimal.equals(oneBest)){
+                    possibleAnimal = animal;
+                }
+            }
+            for(Animal animal : animals){
+                if(!animal.equals(oneBest)&&conflictSolver(animal,possibleAnimal)){
+                    possibleAnimal=animal;
+                }
+            }
+            twoBestAnimals.add(possibleAnimal);
+        }
     }
 
     @Override
@@ -175,7 +203,21 @@ public class RegularTile implements Tile{
     }
 
     @Override
-    public boolean canMoveTo(Vector2d toCheck) {
-        return neighbourTiles.containsKey(toCheck);
+    public Vector2d canMoveTo(Vector2d toCheck, Vector2d oldPosition) {
+        if(toCheck.getX()==-1 && lowerLeft.getY()<=toCheck.getY() && upperRight.getY()>= toCheck.getY()){
+            Vector2d newPosition = new Vector2d(upperRight.getX(),toCheck.getY());
+            if(neighbourTiles.containsKey(newPosition)){
+                return newPosition;
+            }
+        }
+        if(toCheck.getX()==upperRight.getX()+1 && lowerLeft.getY()<=toCheck.getY() && upperRight.getY()>= toCheck.getY()){
+            Vector2d newPosition = new Vector2d(lowerLeft.getX(),toCheck.getY());
+            if(neighbourTiles.containsKey(newPosition)){
+                return newPosition;
+            }
+        } else if (neighbourTiles.containsKey(toCheck)) {
+            return toCheck;
+        }
+        return oldPosition;
     }
 }

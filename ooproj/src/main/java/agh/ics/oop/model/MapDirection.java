@@ -43,6 +43,10 @@ public enum MapDirection {
         };
     }
 
+    public MapDirection next(){
+        return values()[(this.ordinal()+1)%8];
+    }
+
     public static MapDirection valueOf(int value) {
         for (MapDirection direction : values()) {
             if (direction.value == value) {
@@ -50,5 +54,18 @@ public enum MapDirection {
             }
         }
         throw new IllegalArgumentException("wrong value: "+value);
+    }
+
+    public MapDirection opposite(){
+        return switch (this){
+            case NORTH -> SOUTH;
+            case NORTHEAST -> SOUTHWEST;
+            case EAST -> WEST;
+            case SOUTHEAST -> NORTHWEST;
+            case SOUTH -> NORTH;
+            case SOUTHWEST -> NORTHEAST;
+            case WEST -> EAST;
+            case NORTHWEST -> SOUTHEAST;
+        };
     }
 }

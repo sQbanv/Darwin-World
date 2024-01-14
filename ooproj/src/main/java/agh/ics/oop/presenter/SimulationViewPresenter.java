@@ -35,8 +35,8 @@ public class SimulationViewPresenter implements MapChangeListener{
             mapGrid.getColumnConstraints().add(new ColumnConstraints(CELL_WIDTH));
         }
 
-        for (int x = 0; x <= numCols; x++){
-            for (int y = 0; y <= numRows; y++){
+        for (int y = numRows; y >= 0; y--){
+            for (int x = 0; x <= numCols; x++){
                 Rectangle rectangle = new Rectangle(CELL_WIDTH, CELL_HEIGHT);
                 rectangle.setFill(Paint.valueOf("#81f041"));
                 mapGrid.add(rectangle, x, y);

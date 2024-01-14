@@ -50,8 +50,8 @@ public class SimulationPresenter{
     @FXML
     private Spinner<Integer> genotypeLengthField;
 
-    private Properties properties = new Properties();
-    private String propertiesPath = "src/main/resources/config/config.properties";
+    private final Properties properties = new Properties();
+    private final String propertiesPath = "src/main/resources/config/config.properties";
 
 
     @FXML

@@ -26,7 +26,7 @@ public class Simulation implements Runnable{
             map.reproduce();
             map.generatePlants(configurator.numberOfPlantsGrowingPerDay());
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             }catch (InterruptedException e){
                 throw new RuntimeException(e);
             }

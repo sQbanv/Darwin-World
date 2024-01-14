@@ -25,13 +25,14 @@ public class Simulation implements Runnable{
         }catch (InterruptedException e){
             throw new RuntimeException(e);
         }
-        for(int i=0;i<500;i++){
+        while (true){
             if(!isPaused){
                 map.removeDead();
                 map.move();
                 map.eat();
                 map.reproduce();
                 map.generatePlants(configurator.numberOfPlantsGrowingPerDay());
+                map.special();
                 try {
                     Thread.sleep(100);
                 }catch (InterruptedException e){

@@ -12,6 +12,5 @@ public class GlobeMap extends AbstractWorldMap{
 
     @Override
     public void special() {
-
     }
 }

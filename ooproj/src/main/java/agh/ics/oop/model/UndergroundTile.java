@@ -19,7 +19,6 @@ public class UndergroundTile implements Tile {
 
     @Override
     public void addNeighbourTile(Map<Vector2d, Tile> map){
-        System.out.println(position);
         for(MapDirection direction: MapDirection.values()){
             Vector2d neighbor = position.add(direction.toUnitVector());
             if (neighbor.precedes(upperRight) && neighbor.follows(lowerLeft)){

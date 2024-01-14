@@ -64,8 +64,8 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
 
     @Override
     public void move(MoveValidator validator) {
-        //TO CHECK
         energy = energy - 1;
+        days = days + 1;
         int currentGen = genotype.getGenes().get(genotype.getCurrentGen());
         genotype.nextGen();
         MapDirection newDirection = MapDirection.valueOf(currentGen);

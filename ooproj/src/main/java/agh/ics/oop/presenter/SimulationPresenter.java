@@ -188,8 +188,7 @@ public class SimulationPresenter{
         if(Objects.equals(mapType, "GlobeMap")){
             return new GlobeMapFactory();
         } else {
-            //TODO UnderGroudtunnels
-            return null;
+            return new UndergroundTunnelsFactory();
         }
     }
 }

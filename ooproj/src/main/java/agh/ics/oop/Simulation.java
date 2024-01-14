@@ -56,4 +56,8 @@ public class Simulation implements Runnable{
     public void resumeSimulation(){
         isPaused = false;
     }
+
+    public Statistics getStatistics(){
+        return statistics;
+    }
 }

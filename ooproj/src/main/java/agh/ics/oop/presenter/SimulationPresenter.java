@@ -135,8 +135,13 @@ public class SimulationPresenter{
         map.addListener(presenter);
         presenter.setWorldMap(map);
 
-        SimulationEngine simulationEngine = new SimulationEngine(new Simulation(configurator, map, new Statistics()));
-        presenter.setSimulationEngine(simulationEngine);
+        Statistics statistics = new Statistics();
+
+        Simulation simulation = new Simulation(configurator, map, statistics);
+        map.addListener(statistics);
+
+        SimulationEngine simulationEngine = new SimulationEngine(simulation);
+        presenter.setSimulation(simulation);
 
         simulationEngine.runAsync();
 
@@ -188,7 +193,8 @@ public class SimulationPresenter{
         if(Objects.equals(mapType, "GlobeMap")){
             return new GlobeMapFactory();
         } else {
-            return new UndergroundTunnelsFactory();
+            //TODO UnderGroudtunnels
+            return null;
         }
     }
 }

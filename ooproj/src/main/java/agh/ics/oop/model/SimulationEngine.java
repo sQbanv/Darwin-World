@@ -20,12 +20,4 @@ public class SimulationEngine {
         simulationThread = new Thread(simulation);
         simulationThread.start();
     }
-
-    public void pauseSimulation(){
-        simulation.pauseSimulation();
-    }
-
-    public void resumeSimulation(){
-        simulation.resumeSimulation();
-    }
 }

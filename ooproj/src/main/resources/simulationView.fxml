@@ -16,16 +16,31 @@
                 <Label text="Statystyki" minWidth="400"/>
                 <HBox spacing="10">
                     <Label text="Liczba zwierząt: " minWidth="200"/>
-                    <Label fx:id="animalCount" />
+                    <Label fx:id="animalCountLabel" />
                 </HBox>
                 <HBox spacing="10">
                     <Label text="Liczba roślin: " minWidth="200"/>
-                    <Label fx:id="plantCount" />
+                    <Label fx:id="plantCountLabel" />
                 </HBox>
                 <HBox spacing="10">
                     <Label text="Liczba wolnych pól: " minWidth="200"/>
-                    <Label fx:id="freeTilesCount" />
+                    <Label fx:id="freeTilesCountLabel" />
                 </HBox>
+                <HBox spacing="10">
+                    <Label text="Średni poziom energii: " minWidth="200"/>
+                    <Label fx:id="averageEnergyLabel" />
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Średnia długość życia martwych zwierząt: " minWidth="200"/>
+                    <Label fx:id="averageLifeSpanOfDeadAnimalsLabel" />
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Średnia liczba dzieci żyjących zwierząt: " minWidth="200"/>
+                    <Label fx:id="averageChildrenCountLabel" />
+                </HBox>
+                <VBox fx:id="popularGenotypesVBox" spacing="10">
+                    <Label text="Najpopularnieszy genotyp: " minWidth="200"/>
+                </VBox>
             </VBox>
             <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true"/>
         </HBox>

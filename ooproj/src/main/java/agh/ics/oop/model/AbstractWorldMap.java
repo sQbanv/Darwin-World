@@ -12,6 +12,8 @@ public abstract class AbstractWorldMap implements WorldMap{
     protected final List<Plant> plants = new LinkedList<>();
     protected final Vector2d lowerLeft = new Vector2d(0,0);
     protected final Vector2d upperRight;
+    protected double averageLifeSpanOfDeadAnimals = 0.0;
+    protected int deadAnimalsCount = 0;
     protected final LinkedList<MapChangeListener> mapChangeListeners = new LinkedList<>();
     protected final Random random = new Random();
     protected Set<Vector2d> tilesWithAnimals = new HashSet<>();
@@ -88,6 +90,8 @@ public abstract class AbstractWorldMap implements WorldMap{
             Animal animal = intetor.next();
             if(animal.getEnergy()<=0){
                 mapTiles.get(animal.getPosition()).removeAnimal(animal);
+                averageLifeSpanOfDeadAnimals = (deadAnimalsCount * averageLifeSpanOfDeadAnimals + animal.getDays())/(deadAnimalsCount + 1);
+                deadAnimalsCount++;
                 intetor.remove();
             }
         }
@@ -172,6 +176,21 @@ public abstract class AbstractWorldMap implements WorldMap{
 
     public List<Tile> getTiles(){
         return new LinkedList<>(mapTiles.values());
+    }
+
+    @Override
+    public int getNumberOfFreeTiles() {
+        return tilesWithoutPlantStandard.size() + tilesWithoutPlantEquator.size();
+    }
+
+    @Override
+    public int getPlantCount() {
+        return tilesWithPlantEquator.size() + tilesWithPlantStandard.size();
+    }
+
+    @Override
+    public double getAverageLifeSpanOfDeadAnimals() {
+        return averageLifeSpanOfDeadAnimals;
     }
 
     public List<MapElement> getElements(){

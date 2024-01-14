@@ -7,7 +7,7 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
     private final GenotypeFactory genotypeFactory;
     private Vector2d position;
     private int energy;
-    private int maxEnergy;
+    private final int maxEnergy;
     private MapDirection direction;
     private final Genotype genotype;
     private LinkedList<Animal> childrens = new LinkedList<>();
@@ -72,7 +72,7 @@ public class Animal implements MapElement,Movable,Eatable,Reproducible{
         switch (direction){
             case NORTH -> {
                 Vector2d newPosition = validator.canMoveTo(position.add(newDirection.toUnitVector()),position);
-                    if(newPosition != position) {
+                if(newPosition != position) {
                     position = newPosition;
                     direction = newDirection;
                 }

@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,4 +19,9 @@ public interface WorldMap{
     void eat();
     void reproduce();
     void special();
+    List<Animal> getAnimals();
+    List<Plant> getPlants();
+    int getNumberOfFreeTiles();
+    int getPlantCount();
+    double getAverageLifeSpanOfDeadAnimals();
 }

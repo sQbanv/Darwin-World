@@ -72,87 +72,13 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         int currentGen = genotype.getGenes().get(genotype.getCurrentGen());
         genotype.nextGen();
         MapDirection newDirection = MapDirection.valueOf(currentGen);
-        switch (direction){
-            case NORTH -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection;
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case NORTHEAST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case EAST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case SOUTHEAST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().next().next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case SOUTH -> {
-                Vector2d newPosition = validator.canMoveTo(position.subtract(newDirection.toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next().next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case SOUTHWEST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().next().next().next().next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next().next().next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case WEST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().next().next().next().next().next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next().next().next().next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
-            case NORTHWEST -> {
-                Vector2d newPosition = validator.canMoveTo(position.add(newDirection.next().next().next().next().next().next().next().toUnitVector()),position);
-                if(newPosition != position) {
-                    position = newPosition;
-                    direction = newDirection.next().next().next().next().next().next().next();
-                }
-                else {
-                    direction = direction.opposite();
-                }
-            }
+        Vector2d newPosition =  validator.canMoveTo(position.add(direction.rotate(newDirection)),position);
+        if(newPosition != position) {
+            position = newPosition;
+            direction = newDirection;
+        }
+        else {
+            direction = direction.opposite();
         }
     }
 

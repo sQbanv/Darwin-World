@@ -17,6 +17,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final Vector2d upperRight;
     protected double averageLifeSpanOfDeadAnimals = 0.0;
     protected int deadAnimalsCount = 0;
+    protected int day = 0;
     protected final LinkedList<MapChangeListener> mapChangeListeners = new LinkedList<>();
     protected final Random random = new Random();
     protected Set<Vector2d> tilesWithAnimals = new HashSet<>();
@@ -88,6 +89,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     public void removeDead() {
+        day++; //start of new day
         Iterator<Animal> intetor = animals.iterator();
         while (intetor.hasNext()){
             Animal animal = intetor.next();
@@ -95,6 +97,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 mapTiles.get(animal.getPosition()).removeAnimal(animal);
                 averageLifeSpanOfDeadAnimals = (deadAnimalsCount * averageLifeSpanOfDeadAnimals + animal.getDays())/(deadAnimalsCount + 1);
                 deadAnimalsCount++;
+                animal.setDeathDay(day);
                 intetor.remove();
             }
         }

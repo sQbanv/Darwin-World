@@ -15,6 +15,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
     private final Genotype genotype;
     private LinkedList<Animal> childrens = new LinkedList<>();
     private int days = 0;
+    private int deathDay = 0;
     private final Random random = new Random();
 
     public Animal(Vector2d position, int energy, Genotype genotype, GenotypeFactory genotypeFactory){
@@ -46,7 +47,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
     @Override
     public void eat(int plantEnergy) {
-        energy = energy + plantEnergy;
+        energy = Math.min(energy + plantEnergy, maxEnergy);
     }
 
     public void subtractEnergy(int toSubtract){
@@ -63,6 +64,14 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
     public int getChildrens() {
         return childrens.size();
+    }
+
+    public int getDeathDay() {
+        return deathDay;
+    }
+
+    public void setDeathDay(int deathDay){
+        this.deathDay = deathDay;
     }
 
     @Override

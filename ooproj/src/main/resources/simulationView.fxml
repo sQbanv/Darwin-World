@@ -41,6 +41,8 @@
                 <VBox fx:id="popularGenotypesVBox" spacing="10">
                     <Label text="Najpopularnieszy genotyp: " minWidth="200"/>
                 </VBox>
+                <VBox fx:id="clickedAnimalInfo" spacing="10">
+                </VBox>
             </VBox>
             <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true"/>
         </HBox>

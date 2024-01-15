@@ -21,12 +21,12 @@
 
         <HBox spacing="10">
             <Label text="Wysokość mapy:" minWidth="400"/>
-            <Spinner fx:id="mapHeightField" min="5" max="35" initialValue="10" minWidth="250" />
+            <Spinner fx:id="mapHeightField" min="5" max="60" initialValue="10" minWidth="250" />
         </HBox>
 
         <HBox spacing="10">
             <Label text="Szerokość mapy:" minWidth="400"/>
-            <Spinner fx:id="mapWidthField" min="5" max="35" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="mapWidthField" min="5" max="60" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">

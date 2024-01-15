@@ -2,6 +2,7 @@ package agh.ics.oop.presenter;
 
 import agh.ics.oop.Simulation;
 import agh.ics.oop.model.*;
+import agh.ics.oop.model.animal.Animal;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.statistics.Statistics;
 import javafx.application.Platform;
@@ -21,8 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SimulationViewPresenter implements MapChangeListener{
-    private static final int CELL_WIDTH = 20;
-    private static final int CELL_HEIGHT = 20;
+    private static final int CELL_WIDTH = 12;
+    private static final int CELL_HEIGHT = 12;
     private static final int MIN_POPULAR_GENOTYPE = 10;
     private boolean isRunning = true;
 
@@ -44,9 +45,12 @@ public class SimulationViewPresenter implements MapChangeListener{
     private Label averageChildrenCountLabel;
     @FXML
     private VBox popularGenotypesVBox;
+    @FXML
+    private VBox clickedAnimalInfo;
 
     private WorldMap worldMap;
     private Simulation simulation;
+    private Optional<Animal> clickedAnimal = Optional.empty();
 
     public void drawMap(){
         clearGrid();
@@ -75,9 +79,12 @@ public class SimulationViewPresenter implements MapChangeListener{
     private void drawObject(Vector2d currentPosition) {
         Optional<MapElement> worldElement = worldMap.objectAt(currentPosition);
         if(worldElement.isPresent()){
-                Circle circle = new Circle((double) CELL_WIDTH /2);
-                circle.setFill(Paint.valueOf(worldElement.get().getMapRepresentation()));
-                mapGrid.add(circle, currentPosition.getX(), currentPosition.getY());
+            Circle circle = new Circle((double) CELL_WIDTH /2);
+            circle.setFill(Paint.valueOf(worldElement.get().getMapRepresentation()));
+
+            circle.setOnMouseClicked(event -> handleCellClick(worldElement.get()));
+
+            mapGrid.add(circle, currentPosition.getX(), currentPosition.getY());
         }
     }
 
@@ -85,6 +92,13 @@ public class SimulationViewPresenter implements MapChangeListener{
         mapGrid.getChildren().retainAll(mapGrid.getChildren().get(0)); // hack to retain visible grid lines
         mapGrid.getColumnConstraints().clear();
         mapGrid.getRowConstraints().clear();
+    }
+
+    protected void handleCellClick(MapElement mapElement){
+        if(!isRunning && mapElement instanceof Animal){
+            clickedAnimal = Optional.of((Animal) mapElement);
+            updateClickedAnimal();
+        }
     }
 
     public void updateStatistics(){
@@ -107,6 +121,20 @@ public class SimulationViewPresenter implements MapChangeListener{
         }
     }
 
+    private void updateClickedAnimal(){
+        if(clickedAnimal.isPresent()){
+            clickedAnimalInfo.getChildren().clear();
+            clickedAnimalInfo.getChildren().add(new Label("Clicked animal:"));
+            clickedAnimalInfo.getChildren().add(new Label("Pozycja: " + clickedAnimal.get().getPosition()));
+            clickedAnimalInfo.getChildren().add(new Label("Genotyp: " + clickedAnimal.get().getGenotype().toString()));
+            clickedAnimalInfo.getChildren().add(new Label("Energia: " + clickedAnimal.get().getEnergy()));
+            clickedAnimalInfo.getChildren().add(new Label("Dzieci: " + clickedAnimal.get().getChildrens()));
+//            clickedAnimalInfo.getChildren().add(new Label("Potomkowie: ")); //TODO potomkowie
+            clickedAnimalInfo.getChildren().add(new Label("Dni: " + clickedAnimal.get().getDays()));
+            clickedAnimalInfo.getChildren().add(new Label("Dzien smierci: " + clickedAnimal.get().getDeathDay()));
+        }
+    }
+
     public void pauseResumeSimulation(){
         if(isRunning){
             pauseResume.setText("Resume");
@@ -124,6 +152,7 @@ public class SimulationViewPresenter implements MapChangeListener{
         Platform.runLater(() -> {
             drawMap();
             updateStatistics();
+            updateClickedAnimal();
         });
     }
 

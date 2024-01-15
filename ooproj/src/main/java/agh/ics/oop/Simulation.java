@@ -24,7 +24,7 @@ public class Simulation implements Runnable{
         }catch (InterruptedException e){
             throw new RuntimeException(e);
         }
-        while (true){
+        while (!map.getAnimals().isEmpty()){
             if(!isPaused){
                 map.removeDead();
                 map.move();

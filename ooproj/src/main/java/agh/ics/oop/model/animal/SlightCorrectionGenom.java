@@ -91,4 +91,9 @@ public class SlightCorrectionGenom implements Genotype {
             genotype.set(position,genotype.get(position) + upOrDown);
         }
     }
+
+    @Override
+    public String toString() {
+        return genotype.toString() + " -> " + currentGen;
+    }
 }

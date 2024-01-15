@@ -70,6 +70,7 @@ public enum MapDirection {
     }
 
     public Vector2d rotate(MapDirection newDirection) {
+        //TO CHANGE
         return switch (this) {
             case NORTH -> newDirection.toUnitVector();
             case NORTHEAST -> newDirection.next().toUnitVector();

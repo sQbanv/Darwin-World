@@ -43,6 +43,8 @@ public class SimulationPresenter{
     @FXML
     private Spinner<Integer> numberOfPlantsGrowingPerDayField;
     @FXML
+    private Spinner<Integer> initialTunnelCountField;
+    @FXML
     private Spinner<Integer> initialAnimalCountField;
     @FXML
     private Spinner<Integer> initialAnimalEnergyField;
@@ -68,7 +70,18 @@ public class SimulationPresenter{
     @FXML
     public void initialize(){
         loadConfig();
+        configureMapListener();
         configureSpinnerListener();
+    }
+
+    private void configureMapListener(){
+        if (!"UndergroundTunnels".equals(mapTypeField.getValue())){
+            initialTunnelCountField.setDisable(true);
+        }
+        mapTypeField.setOnAction(event -> {
+            String selectedMapType = mapTypeField.getValue();
+            initialTunnelCountField.setDisable(!"UndergroundTunnels".equals(selectedMapType));
+        });
     }
 
     private void configureSpinnerListener(){
@@ -91,6 +104,7 @@ public class SimulationPresenter{
             mapHeightField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("mapHeightField")));
             mapWidthField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("mapWidthField")));
             mapTypeField.setValue(properties.getProperty("mapTypeField"));
+            initialTunnelCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("initialTunnelCountField")));
             initialPlantCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("initialPlantCountField")));
             plantEnergyField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("plantEnergyField")));
             numberOfPlantsGrowingPerDayField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("numberOfPlantsGrowingPerDayField")));
@@ -113,6 +127,7 @@ public class SimulationPresenter{
         properties.setProperty("mapHeightField", String.valueOf(mapHeightField.getValue()));
         properties.setProperty("mapWidthField", String.valueOf(mapWidthField.getValue()));
         properties.setProperty("mapTypeField", mapTypeField.getValue());
+        properties.setProperty("initialTunnelCountField", String.valueOf(initialTunnelCountField.getValue()));
         properties.setProperty("initialPlantCountField", String.valueOf(initialPlantCountField.getValue()));
         properties.setProperty("plantEnergyField", String.valueOf(plantEnergyField.getValue()));
         properties.setProperty("numberOfPlantsGrowingPerDayField", String.valueOf(numberOfPlantsGrowingPerDayField.getValue()));
@@ -178,6 +193,7 @@ public class SimulationPresenter{
         int mapHeight = mapHeightField.getValue();
         int mapWidth = mapWidthField.getValue();
         MapFactory mapType = createMapFactory(mapTypeField.getValue());
+        int initialTunnelCount = initialTunnelCountField.getValue();
         int initialPlantCount = initialPlantCountField.getValue();
         int plantEnergy = plantEnergyField.getValue();
         int numberOfPlantsGrowingPerDay = numberOfPlantsGrowingPerDayField.getValue();
@@ -190,8 +206,8 @@ public class SimulationPresenter{
         GenotypeFactory mutationType = createGenotypeFactory(mutationTypeField.getValue());
         int genotypeLength = genotypeLengthField.getValue();
 
-        return new SimulationConfigurator(mapHeight,mapWidth,mapType,initialPlantCount,
-                plantEnergy, numberOfPlantsGrowingPerDay,initialAnimalCount,
+        return new SimulationConfigurator(mapHeight,mapWidth,mapType,initialTunnelCount,
+                initialPlantCount, plantEnergy, numberOfPlantsGrowingPerDay, initialAnimalCount,
                 initialAnimalEnergy, readyToReproduceEnergy,reproduceEnergyLoss,
                 minMutationCount, maxMutationCount,mutationType,genotypeLength);
     }

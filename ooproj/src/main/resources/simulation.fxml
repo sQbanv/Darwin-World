@@ -13,7 +13,7 @@
 <?import javafx.scene.control.CheckBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="600.0" minWidth="900.0"
+            minHeight="630.0" minWidth="900.0"
             fx:controller="agh.ics.oop.presenter.SimulationPresenter">
 
     <VBox spacing="10">
@@ -42,6 +42,11 @@
                     <String fx:value="GlobeMap" />
                 </value>
             </ChoiceBox>
+        </HBox>
+
+        <HBox spacing="10">
+            <Label text="Startowa liczba tuneli: " minWidth="400"/>
+            <Spinner fx:id="initialTunnelCountField" min="2" max="20" initialValue="4" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">

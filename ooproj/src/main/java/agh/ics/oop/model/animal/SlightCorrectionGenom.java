@@ -1,10 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
+
+import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.animal.Genotype;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SlightCorrectionGenom implements Genotype{
+public class SlightCorrectionGenom implements Genotype {
     private static final int GENOTYPE_NUMBER = 8;
     private List<Integer> genotype;
     private int currentGen;

@@ -1,4 +1,10 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.map;
+
+import agh.ics.oop.model.MapChangeListener;
+import agh.ics.oop.model.MapElement;
+import agh.ics.oop.model.Plant;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.animal.Animal;
 
 import java.util.List;
 import java.util.Optional;

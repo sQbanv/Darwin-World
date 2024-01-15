@@ -1,6 +1,11 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
 
-public class SlightCorrectionGenotypeFactory implements GenotypeFactory{
+import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.animal.Genotype;
+import agh.ics.oop.model.animal.GenotypeFactory;
+import agh.ics.oop.model.animal.SlightCorrectionGenom;
+
+public class SlightCorrectionGenotypeFactory implements GenotypeFactory {
     @Override
     public Genotype createGenotype(int n){
         return new SlightCorrectionGenom(n);

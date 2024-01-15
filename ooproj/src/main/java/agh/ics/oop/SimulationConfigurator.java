@@ -1,7 +1,7 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.GenotypeFactory;
-import agh.ics.oop.model.MapFactory;
+import agh.ics.oop.model.animal.GenotypeFactory;
+import agh.ics.oop.model.map.MapFactory;
 
 public record SimulationConfigurator(int mapHeight, int mapWidth, MapFactory mapType, int initialPlantCount, int plantEnergy,
                                      int numberOfPlantsGrowingPerDay, int initialAnimalCount, int initialAnimalEnergy,

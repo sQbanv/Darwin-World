@@ -1,8 +1,9 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.map;
 
 import agh.ics.oop.SimulationConfigurator;
+import agh.ics.oop.model.Vector2d;
 
-public class UndergroundTunnels extends AbstractWorldMap{
+public class UndergroundTunnels extends AbstractWorldMap {
 
     public UndergroundTunnels(SimulationConfigurator configurator) {
         super(configurator);

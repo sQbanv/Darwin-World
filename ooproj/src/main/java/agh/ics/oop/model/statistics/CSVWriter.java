@@ -1,4 +1,4 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.statistics;
 
 import java.io.FileWriter;
 import java.io.IOException;

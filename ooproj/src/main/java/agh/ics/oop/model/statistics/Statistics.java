@@ -1,10 +1,14 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.statistics;
+
+import agh.ics.oop.model.MapChangeListener;
+import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.map.WorldMap;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Statistics implements MapChangeListener{
+public class Statistics implements MapChangeListener {
     private int animalCount;
     private int plantCount;
     private int freeTilesCount;

@@ -1,6 +1,6 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
 
-public class RegularGenotypeFactory implements GenotypeFactory{
+public class RegularGenotypeFactory implements GenotypeFactory {
     @Override
     public Genotype createGenotype(int n){
         return new RegularGenom(n);

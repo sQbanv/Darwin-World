@@ -1,10 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.statistics;
+
+import agh.ics.oop.model.MapChangeListener;
+import agh.ics.oop.model.map.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class StatisticsToCSV implements MapChangeListener{
+public class StatisticsToCSV implements MapChangeListener {
     private final Statistics statistics;
     private final CSVWriter csvWriter;
     private int day = 1;

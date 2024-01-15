@@ -1,10 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.map;
 
 import agh.ics.oop.SimulationConfigurator;
+import agh.ics.oop.model.*;
+import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.animal.Genotype;
 
 import java.util.*;
 
-public abstract class AbstractWorldMap implements WorldMap{
+public abstract class AbstractWorldMap implements WorldMap {
     protected final UUID uuid;
     protected final SimulationConfigurator configurator;
     protected final Map<Vector2d, Tile> mapTiles = new HashMap<>();

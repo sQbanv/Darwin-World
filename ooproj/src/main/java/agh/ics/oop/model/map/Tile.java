@@ -1,11 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.map;
 
-import java.util.HashMap;
+import agh.ics.oop.model.Plant;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.animal.Animal;
+
 import java.util.Map;
 import java.util.Optional;
-import java.util.Vector;
 
-public interface Tile extends MoveValidator{
+public interface Tile extends MoveValidator {
     void addNeighbourTile(Map<Vector2d, Tile> map);
     void addAnimal(Animal animal);
     void addPlant(Plant plant);

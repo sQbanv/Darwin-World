@@ -1,10 +1,10 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RegularGenom implements Genotype{
+public class RegularGenom implements Genotype {
     private static final int GENOTYPE_NUMBER = 8;
     private List<Integer> genotype;
     private int currentGen;

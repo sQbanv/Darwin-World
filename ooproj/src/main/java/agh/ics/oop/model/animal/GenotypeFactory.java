@@ -1,4 +1,7 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
+
+import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.animal.Genotype;
 
 public interface GenotypeFactory {
     Genotype createGenotype(int n);

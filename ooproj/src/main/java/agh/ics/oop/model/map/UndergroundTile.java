@@ -1,8 +1,13 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.map;
+
+import agh.ics.oop.model.MapDirection;
+import agh.ics.oop.model.Plant;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.animal.Animal;
 
 import java.util.*;
 
-public class RegularTile implements Tile{
+public class UndergroundTile implements Tile {
     private final Vector2d position;
     private final Vector2d lowerLeft;
     private final Vector2d upperRight;
@@ -11,7 +16,7 @@ public class RegularTile implements Tile{
     private List<Animal> twoBestAnimals = new ArrayList<>();
     private Optional<Plant> plant = Optional.empty();
 
-    public RegularTile(Vector2d position,Vector2d lowerLeft, Vector2d upperRight){
+    public UndergroundTile(Vector2d position,Vector2d lowerLeft, Vector2d upperRight){
         this.position = position;
         this.lowerLeft=lowerLeft;
         this.upperRight=upperRight;
@@ -23,30 +28,6 @@ public class RegularTile implements Tile{
             Vector2d neighbor = position.add(direction.toUnitVector());
             if (neighbor.precedes(upperRight) && neighbor.follows(lowerLeft)){
                 neighbourTiles.put(neighbor,map.get(neighbor));
-            }
-        }
-        if(position.getX()==lowerLeft.getX()){
-            Vector2d positionA = new Vector2d(upperRight.getX(),position.getY());
-            neighbourTiles.put(positionA,map.get(positionA));
-            if(position.getY()>lowerLeft.getY()){
-                Vector2d positionB = new Vector2d(upperRight.getX(), position.getY()-1);
-                neighbourTiles.put(positionB,map.get(positionB));
-            }
-            if(position.getY()<upperRight.getY()){
-                Vector2d positionC = new Vector2d(upperRight.getX(), position.getY()+1);
-                neighbourTiles.put(positionC,map.get(positionC));
-            }
-        }
-        if(position.getX()==upperRight.getX()){
-            Vector2d positionA = new Vector2d(lowerLeft.getX(),position.getY());
-            neighbourTiles.put(positionA,map.get(position));
-            if(position.getY()<upperRight.getY()){
-                Vector2d positionB = new Vector2d(lowerLeft.getX(), position.getY()+1);
-                neighbourTiles.put(positionB,map.get(positionB));
-            }
-            if(position.getY()>lowerLeft.getY()){
-                Vector2d positionC = new Vector2d(lowerLeft.getX(), position.getY()-1);
-                neighbourTiles.put(positionC,map.get(positionC));
             }
         }
     }
@@ -199,18 +180,7 @@ public class RegularTile implements Tile{
 
     @Override
     public Vector2d canMoveTo(Vector2d toCheck, Vector2d oldPosition) {
-        if(toCheck.getX()==-1 && lowerLeft.getY()<=toCheck.getY() && upperRight.getY()>= toCheck.getY()){
-            Vector2d newPosition = new Vector2d(upperRight.getX(),toCheck.getY());
-            if(neighbourTiles.containsKey(newPosition)){
-                return newPosition;
-            }
-        }
-        if(toCheck.getX()==upperRight.getX()+1 && lowerLeft.getY()<=toCheck.getY() && upperRight.getY()>= toCheck.getY()){
-            Vector2d newPosition = new Vector2d(lowerLeft.getX(),toCheck.getY());
-            if(neighbourTiles.containsKey(newPosition)){
-                return newPosition;
-            }
-        } else if (neighbourTiles.containsKey(toCheck)) {
+        if (neighbourTiles.containsKey(toCheck)) {
             return toCheck;
         }
         return oldPosition;

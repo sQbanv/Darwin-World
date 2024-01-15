@@ -1,8 +1,11 @@
-package agh.ics.oop.model;
+package agh.ics.oop.model.animal;
+
+import agh.ics.oop.model.*;
+import agh.ics.oop.model.map.MoveValidator;
 
 import java.util.*;
 
-public class Animal implements MapElement,Movable,Eatable,Reproducible{
+public class Animal implements MapElement, Movable, Eatable, Reproducible {
     private final UUID uuid;
     private final GenotypeFactory genotypeFactory;
     private Vector2d position;

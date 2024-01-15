@@ -1,8 +1,7 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.*;
-
-import java.util.Random;
+import agh.ics.oop.model.map.WorldMap;
+import agh.ics.oop.model.statistics.Statistics;
 
 public class Simulation implements Runnable{
     private final WorldMap map;

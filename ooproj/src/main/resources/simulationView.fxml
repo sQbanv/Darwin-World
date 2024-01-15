@@ -48,6 +48,8 @@
         </HBox>
         <HBox>
             <Button fx:id="pauseResume" text="Pause" minWidth="200" onAction="#pauseResumeSimulation"/>
+            <HBox fx:id="pauseButtons">
+            </HBox>
         </HBox>
     </VBox>
 </BorderPane>

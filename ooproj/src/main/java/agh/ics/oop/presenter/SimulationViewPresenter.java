@@ -3,15 +3,14 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.animal.Animal;
+import agh.ics.oop.model.animal.Genotype;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.statistics.Statistics;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -20,6 +19,7 @@ import javafx.scene.control.Button;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Vector;
 
 public class SimulationViewPresenter implements MapChangeListener{
     private static final int CELL_WIDTH = 12;
@@ -47,6 +47,8 @@ public class SimulationViewPresenter implements MapChangeListener{
     private VBox popularGenotypesVBox;
     @FXML
     private VBox clickedAnimalInfo;
+    @FXML
+    private HBox pauseButtons;
 
     private WorldMap worldMap;
     private Simulation simulation;
@@ -135,13 +137,52 @@ public class SimulationViewPresenter implements MapChangeListener{
         }
     }
 
+    public void setPauseButtons(){
+        Button preferredTiles = new Button("Show preferred tiles");
+        Button popularGenotype = new Button("Show animals with the most popular genotype");
+
+        preferredTiles.setMinWidth(200);
+        popularGenotype.setMinWidth(500);
+
+        preferredTiles.setOnAction(event -> {
+            List<Vector2d> preferredTilesPositions = worldMap.getPreferredTilesPositions();
+            for(Vector2d position : preferredTilesPositions){
+                markTile(position, new Color(0, 0.25, 0, 0.5));
+            }
+        });
+
+        popularGenotype.setOnAction(event -> {
+            List<Animal> animals = worldMap.getAnimals();
+            String mostPopularGenotype = simulation.getStatistics().getMostPopularGenotype().get(0).getKey();
+            for(Animal animal : animals){
+                if(animal.getGenotype().getGenes().toString().equals(mostPopularGenotype)){
+                    markTile(animal.getPosition(), new Color(1,0,1,0.5));
+                }
+            }
+        });
+
+        pauseButtons.getChildren().add(preferredTiles);
+        pauseButtons.getChildren().add(popularGenotype);
+    }
+
+    public void removePauseButtons(){
+        pauseButtons.getChildren().clear();
+    }
+
+    protected void markTile(Vector2d position, Color color){
+        Rectangle rectangle = new Rectangle(CELL_WIDTH, CELL_HEIGHT, color);
+        mapGrid.add(rectangle, position.getX(), position.getY());
+    }
+
     public void pauseResumeSimulation(){
         if(isRunning){
             pauseResume.setText("Resume");
+            setPauseButtons();
             simulation.pauseSimulation();
             isRunning = false;
         } else {
             pauseResume.setText("Pause");
+            removePauseButtons();
             simulation.resumeSimulation();
             isRunning = true;
         }

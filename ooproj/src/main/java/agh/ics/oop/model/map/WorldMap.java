@@ -30,4 +30,5 @@ public interface WorldMap{
     int getNumberOfFreeTiles();
     int getPlantCount();
     double getAverageLifeSpanOfDeadAnimals();
+    List<Vector2d> getPreferredTilesPositions();
 }

@@ -199,6 +199,14 @@ public abstract class AbstractWorldMap implements WorldMap {
         return averageLifeSpanOfDeadAnimals;
     }
 
+    @Override
+    public List<Vector2d> getPreferredTilesPositions() {
+        List<Vector2d> preferredTilesPositions = new LinkedList<>();
+        preferredTilesPositions.addAll(tilesWithoutPlantEquator);
+        preferredTilesPositions.addAll(tilesWithPlantEquator);
+        return preferredTilesPositions;
+    }
+
     public List<MapElement> getElements(){
         //TODO
         return new LinkedList<>();

@@ -6,6 +6,7 @@ import agh.ics.oop.model.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.BorderPane;
@@ -49,6 +50,8 @@ public class SimulationPresenter{
     private ChoiceBox<String> mutationTypeField;
     @FXML
     private Spinner<Integer> genotypeLengthField;
+    @FXML
+    private CheckBox saveToCSV;
 
     private final Properties properties = new Properties();
     private final String propertiesPath = "src/main/resources/config/config.properties";
@@ -91,6 +94,7 @@ public class SimulationPresenter{
             maxMutationCountField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("maxMutationCountField")));
             mutationTypeField.setValue(properties.getProperty("mutationTypeField"));
             genotypeLengthField.getValueFactory().setValue(Integer.valueOf(properties.getProperty("genotypeLengthField")));
+            saveToCSV.setSelected(Boolean.parseBoolean(properties.getProperty("saveToCSV")));
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -112,6 +116,7 @@ public class SimulationPresenter{
         properties.setProperty("maxMutationCountField", String.valueOf(maxMutationCountField.getValue()));
         properties.setProperty("mutationTypeField", mutationTypeField.getValue());
         properties.setProperty("genotypeLengthField", String.valueOf(genotypeLengthField.getValue()));
+        properties.setProperty("saveToCSV", String.valueOf(saveToCSV.isSelected()));
 
         try(FileOutputStream fileOutputStream = new FileOutputStream(propertiesPath)){
             properties.store(fileOutputStream, null);
@@ -139,6 +144,10 @@ public class SimulationPresenter{
 
         Simulation simulation = new Simulation(configurator, map, statistics);
         map.addListener(statistics);
+
+        if(saveToCSV.isSelected()){
+            map.addListener(new StatisticsToCSV(statistics, map.getID() + ".csv"));
+        }
 
         SimulationEngine simulationEngine = new SimulationEngine(simulation);
         presenter.setSimulation(simulation);
@@ -173,8 +182,6 @@ public class SimulationPresenter{
         GenotypeFactory mutationType = createGenotypeFactory(mutationTypeField.getValue());
         int genotypeLength = genotypeLengthField.getValue();
 
-        //TODO exceptions
-
         return new SimulationConfigurator(mapHeight,mapWidth,mapType,initialPlantCount,
                 plantEnergy, numberOfPlantsGrowingPerDay,initialAnimalCount,
                 initialAnimalEnergy, readyToReproduceEnergy,reproduceEnergyLoss,
@@ -193,8 +200,7 @@ public class SimulationPresenter{
         if(Objects.equals(mapType, "GlobeMap")){
             return new GlobeMapFactory();
         } else {
-            //TODO UnderGroudtunnels
-            return null;
+            return new UndergroundTunnelsFactory();
         }
     }
 }

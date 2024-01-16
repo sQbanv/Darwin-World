@@ -18,20 +18,23 @@ public class Simulation implements Runnable{
 
     @Override
     public void run() {
-        map.mapChanged();
-        try {
-            Thread.sleep(100);
-        }catch (InterruptedException e){
-            throw new RuntimeException(e);
-        }
         while (!map.getAnimals().isEmpty()){
             if(!isPaused){
                 map.removeDead();
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException e){
+                    throw new RuntimeException(e);
+                }
                 map.move();
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException e){
+                    throw new RuntimeException(e);
+                }
                 map.eat();
                 map.reproduce();
                 map.generatePlants(configurator.numberOfPlantsGrowingPerDay());
-                map.special();
                 try {
                     Thread.sleep(100);
                 }catch (InterruptedException e){

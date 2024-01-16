@@ -10,8 +10,4 @@ public class GlobeMap extends AbstractWorldMap {
         generateAnimals(configurator.initialAnimalCount());
         generatePlants(configurator.initialPlantCount());
     }
-
-    @Override
-    public void special() {
-    }
 }

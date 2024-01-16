@@ -85,6 +85,7 @@ public abstract class AbstractWorldMap implements WorldMap {
                 tilesWithoutPlantStandard.remove(idx);
                 i++;
             }
+            else break;
         }
     }
 

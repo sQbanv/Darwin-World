@@ -105,7 +105,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
     @Override
     public String toString() {
-        return direction.toString();
+        return uuid.toString();
     }
 
     @Override

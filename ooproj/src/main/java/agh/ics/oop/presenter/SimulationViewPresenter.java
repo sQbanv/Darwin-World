@@ -55,7 +55,6 @@ public class SimulationViewPresenter implements MapChangeListener{
     private WorldMap worldMap;
     private Simulation simulation;
     private Optional<Animal> clickedAnimal = Optional.empty();
-    private Stage stage;
 
     private void handleWindowClose(){
         simulation.stopSimulation();
@@ -91,7 +90,7 @@ public class SimulationViewPresenter implements MapChangeListener{
     private void drawObject(Vector2d currentPosition) {
         Optional<MapElement> worldElement = worldMap.objectAt(currentPosition);
         if(worldElement.isPresent()){
-            Circle circle = new Circle((double) CELL_WIDTH /2);
+            Circle circle = new Circle(CELL_WIDTH /2);
             circle.setFill(Paint.valueOf(worldElement.get().getMapRepresentation()));
 
             circle.setOnMouseClicked(event -> handleCellClick(worldElement.get()));
@@ -233,7 +232,6 @@ public class SimulationViewPresenter implements MapChangeListener{
     }
 
     public void setStage(Stage stage){
-        this.stage = stage;
-        this.stage.setOnCloseRequest(event -> handleWindowClose());
+        stage.setOnCloseRequest(event -> handleWindowClose());
     }
 }

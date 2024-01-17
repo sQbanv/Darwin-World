@@ -77,12 +77,8 @@ public class SimulationPresenter{
     }
 
     private void configureMapBoundariesListener(){
-        mapHeightField.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            setSpinnerWithMapBoundaries(newValue * mapWidthField.getValue());
-        }));
-        mapWidthField.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            setSpinnerWithMapBoundaries(newValue * mapHeightField.getValue());
-        }));
+        mapHeightField.valueProperty().addListener(((observable, oldValue, newValue) -> setSpinnerWithMapBoundaries(newValue * mapWidthField.getValue())));
+        mapWidthField.valueProperty().addListener(((observable, oldValue, newValue) -> setSpinnerWithMapBoundaries(newValue * mapHeightField.getValue())));
 
         initialPlantCountField.valueProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue > mapWidthField.getValue() * mapHeightField.getValue()){

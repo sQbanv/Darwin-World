@@ -1,8 +1,5 @@
 package agh.ics.oop.model.animal;
 
-import agh.ics.oop.model.animal.Animal;
-import agh.ics.oop.model.animal.Genotype;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

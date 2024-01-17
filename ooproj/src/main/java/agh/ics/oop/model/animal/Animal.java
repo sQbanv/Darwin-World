@@ -13,7 +13,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
     private final int maxEnergy;
     private MapDirection direction;
     private final Genotype genotype;
-    private LinkedList<Animal> childrens = new LinkedList<>();
+    private final LinkedList<Animal> childrens = new LinkedList<>();
     private int days = 0;
     private int deathDay = 0;
     private final Random random = new Random();

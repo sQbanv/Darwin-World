@@ -70,11 +70,58 @@ public class SimulationPresenter{
     @FXML
     public void initialize(){
         loadConfig();
-        configureMapListener();
+        configureMapBoundariesListener();
+        configureUndergroundTunnelsListener();
+        configureEnergyListener();
         configureSpinnerListener();
     }
 
-    private void configureMapListener(){
+    private void configureMapBoundariesListener(){
+        mapHeightField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            setSpinnerWithMapBoundaries(newValue * mapWidthField.getValue());
+        }));
+        mapWidthField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            setSpinnerWithMapBoundaries(newValue * mapHeightField.getValue());
+        }));
+
+        initialPlantCountField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > mapWidthField.getValue() * mapHeightField.getValue()){
+                initialPlantCountField.getValueFactory().setValue(oldValue);
+            }
+        }));
+        initialAnimalCountField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > mapWidthField.getValue() * mapHeightField.getValue()){
+                initialAnimalCountField.getValueFactory().setValue(oldValue);
+            }
+        }));
+        numberOfPlantsGrowingPerDayField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > mapWidthField.getValue() * mapHeightField.getValue()){
+                numberOfPlantsGrowingPerDayField.getValueFactory().setValue(oldValue);
+            }
+        }));
+        initialTunnelCountField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > mapWidthField.getValue() * mapHeightField.getValue() / 3){
+                initialTunnelCountField.getValueFactory().setValue(oldValue);
+            }
+        }));
+    }
+
+    private void setSpinnerWithMapBoundaries(int tiles){
+        if (initialPlantCountField.getValue() > tiles){
+            initialPlantCountField.getValueFactory().setValue(tiles);
+        }
+        if (initialAnimalCountField.getValue() > tiles){
+            initialAnimalCountField.getValueFactory().setValue(tiles);
+        }
+        if (numberOfPlantsGrowingPerDayField.getValue() > tiles){
+            numberOfPlantsGrowingPerDayField.getValueFactory().setValue(tiles);
+        }
+        if (initialTunnelCountField.getValue() > tiles / 3){
+            initialTunnelCountField.getValueFactory().setValue(tiles/3);
+        }
+    }
+
+    private void configureUndergroundTunnelsListener(){
         if (!"UndergroundTunnels".equals(mapTypeField.getValue())){
             initialTunnelCountField.setDisable(true);
         }
@@ -82,6 +129,32 @@ public class SimulationPresenter{
             String selectedMapType = mapTypeField.getValue();
             initialTunnelCountField.setDisable(!"UndergroundTunnels".equals(selectedMapType));
         });
+    }
+
+    private void configureEnergyListener(){
+        initialAnimalEnergyField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue <= readyToReproduceEnergyField.getValue()){
+                readyToReproduceEnergyField.getValueFactory().setValue(newValue - 1);
+                if(readyToReproduceEnergyField.getValue() < reproduceEnergyLossField.getValue()){
+                    reproduceEnergyLossField.getValueFactory().setValue(readyToReproduceEnergyField.getValue());
+                }
+            }
+        }));
+
+        readyToReproduceEnergyField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > initialAnimalEnergyField.getValue() - 1){
+                readyToReproduceEnergyField.getValueFactory().setValue(oldValue);
+            }
+            if(newValue < reproduceEnergyLossField.getValue()){
+                reproduceEnergyLossField.getValueFactory().setValue(newValue);
+            }
+        }));
+
+        reproduceEnergyLossField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue > readyToReproduceEnergyField.getValue()){
+                reproduceEnergyLossField.getValueFactory().setValue(oldValue);
+            }
+        }));
     }
 
     private void configureSpinnerListener(){
@@ -157,16 +230,18 @@ public class SimulationPresenter{
         BorderPane viewRoot = loader.load();
         SimulationViewPresenter presenter = loader.getController();
 
+        presenter.setStage(primaryStage);
+
         SimulationConfigurator configurator = createConfigurator();
         WorldMap map = configurator.mapType().createMap(configurator);
 
+        Statistics statistics = new Statistics();
+
+        map.addListener(statistics);
         map.addListener(presenter);
         presenter.setWorldMap(map);
 
-        Statistics statistics = new Statistics();
-
         Simulation simulation = new Simulation(configurator, map, statistics);
-        map.addListener(statistics);
 
         if(saveToCSV.isSelected()){
             map.addListener(new StatisticsToCSV(statistics, map.getID() + ".csv"));

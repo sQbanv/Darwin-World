@@ -3,7 +3,6 @@ package agh.ics.oop.presenter;
 import agh.ics.oop.Simulation;
 import agh.ics.oop.model.*;
 import agh.ics.oop.model.animal.Animal;
-import agh.ics.oop.model.animal.Genotype;
 import agh.ics.oop.model.map.WorldMap;
 import agh.ics.oop.model.statistics.Statistics;
 import javafx.application.Platform;
@@ -15,15 +14,16 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Vector;
 
 public class SimulationViewPresenter implements MapChangeListener{
-    private static final int CELL_WIDTH = 12;
-    private static final int CELL_HEIGHT = 12;
+    private static double CELL_WIDTH = 12;
+    private static double CELL_HEIGHT = 12;
     private static final int MIN_POPULAR_GENOTYPE = 10;
     private boolean isRunning = true;
 
@@ -53,9 +53,17 @@ public class SimulationViewPresenter implements MapChangeListener{
     private WorldMap worldMap;
     private Simulation simulation;
     private Optional<Animal> clickedAnimal = Optional.empty();
+    private Stage stage;
+
+    private void handleWindowClose(){
+        simulation.stopSimulation();
+    }
 
     public void drawMap(){
         clearGrid();
+
+        mapGrid.setStyle("-fx-grid-lines-color: transparent");
+        mapGrid.setGridLinesVisible(false);
 
         int numRows = worldMap.upperRight().getY();
         int numCols = worldMap.upperRight().getX();
@@ -131,7 +139,7 @@ public class SimulationViewPresenter implements MapChangeListener{
             clickedAnimalInfo.getChildren().add(new Label("Genotyp: " + clickedAnimal.get().getGenotype().toString()));
             clickedAnimalInfo.getChildren().add(new Label("Energia: " + clickedAnimal.get().getEnergy()));
             clickedAnimalInfo.getChildren().add(new Label("Dzieci: " + clickedAnimal.get().getChildrens()));
-//            clickedAnimalInfo.getChildren().add(new Label("Potomkowie: ")); //TODO potomkowie
+            clickedAnimalInfo.getChildren().add(new Label("Potomkowie: " + clickedAnimal.get().getDescendants()));
             clickedAnimalInfo.getChildren().add(new Label("Dni: " + clickedAnimal.get().getDays()));
             clickedAnimalInfo.getChildren().add(new Label("Dzien smierci: " + clickedAnimal.get().getDeathDay()));
         }
@@ -199,9 +207,17 @@ public class SimulationViewPresenter implements MapChangeListener{
 
     public void setWorldMap(WorldMap map) {
         this.worldMap = map;
+        double screenHeight = Screen.getPrimary().getVisualBounds().getHeight() - 300;
+        CELL_HEIGHT = screenHeight / Math.max(worldMap.upperRight().getY(),worldMap.upperRight().getX());
+        CELL_WIDTH = screenHeight / Math.max(worldMap.upperRight().getY(),worldMap.upperRight().getX());
     }
 
     public void setSimulation(Simulation simulation){
         this.simulation = simulation;
+    }
+
+    public void setStage(Stage stage){
+        this.stage = stage;
+        this.stage.setOnCloseRequest(event -> handleWindowClose());
     }
 }

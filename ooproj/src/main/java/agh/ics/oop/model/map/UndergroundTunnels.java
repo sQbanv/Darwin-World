@@ -1,6 +1,7 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.SimulationConfigurator;
+import agh.ics.oop.model.MapElement;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.animal.Animal;
 

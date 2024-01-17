@@ -13,7 +13,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
     private final int maxEnergy;
     private MapDirection direction;
     private final Genotype genotype;
-    private final LinkedList<Animal> childrens = new LinkedList<>();
+    private final LinkedList<Animal> children = new LinkedList<>();
     private int days = 0;
     private int deathDay = 0;
     private final Random random = new Random();
@@ -62,8 +62,8 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         return days;
     }
 
-    public int getChildrens() {
-        return childrens.size();
+    public int getChildren() {
+        return children.size();
     }
 
     public int getDescendants() {
@@ -78,8 +78,8 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
         visited.add(animal);
 
-        int descendants = childrens.size();
-        for (Animal child : childrens) {
+        int descendants = children.size();
+        for (Animal child : children) {
             descendants += getDescendants(child, visited);
         }
 
@@ -118,8 +118,8 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         Animal child = new Animal(position, childEnergy, childGenotype, genotypeFactory);
         energy = energy - energyCost;
         animal.subtractEnergy(energyCost);
-        childrens.add(child);
-        animal.childrens.add(child);
+        children.add(child);
+        animal.children.add(child);
         return child;
     }
 

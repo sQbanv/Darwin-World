@@ -139,7 +139,7 @@ public class SimulationViewPresenter implements MapChangeListener{
             clickedAnimalInfo.getChildren().add(new Label("Pozycja: " + clickedAnimal.get().getPosition()));
             clickedAnimalInfo.getChildren().add(new Label("Genotyp: " + clickedAnimal.get().getGenotype().toString()));
             clickedAnimalInfo.getChildren().add(new Label("Energia: " + clickedAnimal.get().getEnergy()));
-            clickedAnimalInfo.getChildren().add(new Label("Dzieci: " + clickedAnimal.get().getChildrens()));
+            clickedAnimalInfo.getChildren().add(new Label("Dzieci: " + clickedAnimal.get().getChildren()));
             clickedAnimalInfo.getChildren().add(new Label("Potomkowie: " + clickedAnimal.get().getDescendants()));
             if(clickedAnimal.get().getDeathDay() == 0){
                 clickedAnimalInfo.getChildren().add(new Label("Dni: " + clickedAnimal.get().getDays()));

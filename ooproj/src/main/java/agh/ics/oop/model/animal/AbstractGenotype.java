@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SlightCorrectionGenom implements Genotype {
-    private static final int GENOTYPE_NUMBER = 8;
+public abstract class AbstractGenotype implements Genotype{
+    protected static final int GENOTYPE_NUMBER = 8;
     private List<Integer> genotype;
     private int currentGen;
-    private final Random random = new Random();
+    protected final Random random = new Random();
 
-    public SlightCorrectionGenom(int n){
+    public AbstractGenotype(int n){
         genotype = generateRandomIntList(n);
         currentGen = random.nextInt(n);
     }
 
-    public SlightCorrectionGenom(int n, int minMutations, int maxMutations, Animal parentA, Animal parentB){
+    public AbstractGenotype(int n, int minMutations, int maxMutations, Animal parentA, Animal parentB){
         generateGenotype(parentA, parentB, minMutations, maxMutations);
         currentGen = random.nextInt(n);
     }
@@ -73,20 +73,6 @@ public class SlightCorrectionGenom implements Genotype {
     @Override
     public int getCurrentGen(){
         return currentGen;
-    }
-
-    @Override
-    public void mutate(){
-        int position = random.nextInt(genotype.size());
-        int upOrDown = random.nextBoolean() ? 1 : -1;
-
-        if(genotype.get(position) == 0 && upOrDown == -1){
-            genotype.set(position,7);
-        } else if (genotype.get(position) == 7 && upOrDown == 1){
-            genotype.set(position,0);
-        } else {
-            genotype.set(position,genotype.get(position) + upOrDown);
-        }
     }
 
     @Override

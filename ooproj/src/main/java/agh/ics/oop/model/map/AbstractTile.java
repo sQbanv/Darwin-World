@@ -44,9 +44,9 @@ public abstract class AbstractTile implements Tile{
         } else if (oldAnimal.getDays()<newAnimal.getDays()) {
             return true;
         }
-        else if (newAnimal.getChildrens()<oldAnimal.getChildrens()){
+        else if (newAnimal.getChildren()<oldAnimal.getChildren()){
             return false;
-        } else if (oldAnimal.getChildrens()<newAnimal.getChildrens()) {
+        } else if (oldAnimal.getChildren()<newAnimal.getChildren()) {
             return true;
         }
         Random random = new Random();
@@ -157,9 +157,9 @@ public abstract class AbstractTile implements Tile{
         } else if (animalB.getDays()<animalA.getDays()) {
             return animalB;
         }
-        else if (animalA.getChildrens()<animalB.getChildrens()){
+        else if (animalA.getChildren()<animalB.getChildren()){
             return animalA;
-        } else if (animalB.getChildrens()<animalA.getChildrens()) {
+        } else if (animalB.getChildren()<animalA.getChildren()) {
             return animalB;
         }
         Random random = new Random();

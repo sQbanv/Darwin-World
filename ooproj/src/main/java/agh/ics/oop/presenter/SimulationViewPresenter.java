@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class SimulationViewPresenter implements MapChangeListener{
-    private static double CELL_WIDTH = 12;
-    private static double CELL_HEIGHT = 12;
+    private double CELL_WIDTH = 12;
+    private double CELL_HEIGHT = 12;
     private static final int MIN_POPULAR_GENOTYPE = 10;
     private boolean isRunning = true;
 

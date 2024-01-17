@@ -2,22 +2,29 @@ package agh.ics.oop.model;
 
 import agh.ics.oop.Simulation;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class SimulationEngine {
-    private final Simulation simulation;
-    private Thread simulationThread;
+    private final ExecutorService threadPool;
 
-    public SimulationEngine(Simulation simulation){
-        this.simulation = simulation;
+    public SimulationEngine(){
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
-    public void runAsync(){
-        simulationThread = new Thread(simulation);
-        simulationThread.start();
+    public void addSimulation(Simulation simulation){
+        threadPool.submit(simulation);
+    }
+
+    public void stopSimulations() {
+        threadPool.shutdown();
+        try {
+            if (!threadPool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+                System.err.println("Some simulations did not terminate in time.");
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Error waiting for termination: " + e.getMessage());
+        }
     }
 }

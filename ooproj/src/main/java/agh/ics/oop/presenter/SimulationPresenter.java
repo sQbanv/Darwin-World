@@ -65,7 +65,7 @@ public class SimulationPresenter{
 
     private final Properties properties = new Properties();
     private final String propertiesPath = "src/main/resources/config/config.properties";
-
+    private final SimulationEngine simulationEngine = new SimulationEngine();
 
     @FXML
     public void initialize(){
@@ -247,10 +247,8 @@ public class SimulationPresenter{
             map.addListener(new StatisticsToCSV(statistics, map.getID() + ".csv"));
         }
 
-        SimulationEngine simulationEngine = new SimulationEngine(simulation);
+        simulationEngine.addSimulation(simulation);
         presenter.setSimulation(simulation);
-
-        simulationEngine.runAsync();
 
         configureStage(primaryStage, viewRoot, map.getID());
         primaryStage.show();
@@ -301,5 +299,9 @@ public class SimulationPresenter{
         } else {
             return new UndergroundTunnelsFactory();
         }
+    }
+
+    public void setStage(Stage primaryStage){
+        primaryStage.setOnCloseRequest(event -> simulationEngine.stopSimulations());
     }
 }

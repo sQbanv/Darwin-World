@@ -192,6 +192,9 @@ public class SimulationViewPresenter implements MapChangeListener{
 
     protected void markTile(Vector2d position, Color color){
         Rectangle rectangle = new Rectangle(CELL_WIDTH, CELL_HEIGHT, color);
+        if(worldMap.objectAt(position).isPresent()){
+            rectangle.setOnMouseClicked(event -> handleCellClick(worldMap.objectAt(position).get()));
+        }
         mapGrid.add(rectangle, position.getX(), position.getY());
     }
 

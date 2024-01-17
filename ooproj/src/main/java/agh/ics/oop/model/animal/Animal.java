@@ -108,6 +108,10 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         return uuid.toString();
     }
 
+    public void setPosition(Vector2d position){
+        this.position = position;
+    }
+
     @Override
     public String getMapRepresentation(){
         double energyPercentage = (double) energy /maxEnergy;

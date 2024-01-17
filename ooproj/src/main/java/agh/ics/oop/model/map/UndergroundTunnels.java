@@ -72,6 +72,12 @@ public class UndergroundTunnels extends AbstractWorldMap {
                 Tile tile2 = mapTiles.get(position2);
                 List<Animal> animals1 = new ArrayList<>(tile1.getAnimals());
                 List<Animal> animals2 = new ArrayList<>(tile2.getAnimals());
+                for(Animal animal : animals1){
+                    animal.setPosition(position2);
+                }
+                for(Animal animal : animals2){
+                    animal.setPosition(position);
+                }
 //                System.out.println(tile1.getAnimals() + " " + tile2.getAnimals());
 //                System.out.println(tile1.getPosition() + " " + tile2.getPosition());
                 if (!animals1.isEmpty() && !animals2.isEmpty()) {

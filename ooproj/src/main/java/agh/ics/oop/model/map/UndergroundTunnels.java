@@ -12,7 +12,7 @@ public class UndergroundTunnels extends AbstractWorldMap {
     private final HashMap<Vector2d,Vector2d> tilesWithTunnelFirst = new HashMap<>();
     private final HashMap<Vector2d,Vector2d> tilesWithTunnelSecond = new HashMap<>();
     private final List<Vector2d> tilesWithoutTunnel = new LinkedList<>();
-    private Set<Vector2d> wasTunnelUsed = new HashSet<>();
+    private final Set<Vector2d> wasTunnelUsed = new HashSet<>();
     private final HashMap<Vector2d, Tunnel> tunnels = new HashMap<>();
     public UndergroundTunnels(SimulationConfigurator configurator) {
         super(configurator);

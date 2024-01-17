@@ -29,7 +29,7 @@ public class Statistics implements MapChangeListener {
                 .average()
                 .orElse(0.0);
         averageChildrenCount = animals.stream()
-                .mapToInt(Animal::getChildrens)
+                .mapToInt(Animal::getChildren)
                 .average()
                 .orElse(0.0);
         averageLifeSpanOfDeadAnimals = worldMap.getAverageLifeSpanOfDeadAnimals();

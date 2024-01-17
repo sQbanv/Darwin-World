@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RegularGenom implements Genotype {
-    private static final int GENOTYPE_NUMBER = 8;
+public abstract class AbstractGenotype implements Genotype{
+    protected static final int GENOTYPE_NUMBER = 8;
     private List<Integer> genotype;
     private int currentGen;
-    private final Random random = new Random();
+    protected final Random random = new Random();
 
-    public RegularGenom(int n){
+    public AbstractGenotype(int n){
         genotype = generateRandomIntList(n);
         currentGen = random.nextInt(n);
     }
 
-    public RegularGenom(int n, int minMutations, int maxMutations, Animal parentA, Animal parentB){
+    public AbstractGenotype(int n, int minMutations, int maxMutations, Animal parentA, Animal parentB){
         generateGenotype(parentA, parentB, minMutations, maxMutations);
         currentGen = random.nextInt(n);
     }
@@ -73,18 +73,6 @@ public class RegularGenom implements Genotype {
     @Override
     public int getCurrentGen(){
         return currentGen;
-    }
-
-    @Override
-    public void mutate(){
-        int position = random.nextInt(genotype.size());
-        int newGen = random.nextInt(GENOTYPE_NUMBER);
-
-        while(newGen == genotype.get(position)){
-            newGen = random.nextInt(GENOTYPE_NUMBER);
-        }
-
-        genotype.set(position,newGen);
     }
 
     @Override

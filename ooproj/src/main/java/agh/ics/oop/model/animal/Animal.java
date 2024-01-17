@@ -10,7 +10,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
     private final GenotypeFactory genotypeFactory;
     private Vector2d position;
     private int energy;
-    private final int maxEnergy;
+    private int maxEnergy;
     private MapDirection direction;
     private final Genotype genotype;
     private LinkedList<Animal> childrens = new LinkedList<>();
@@ -47,7 +47,8 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
     @Override
     public void eat(int plantEnergy) {
-        energy = Math.min(energy + plantEnergy, maxEnergy);
+        energy = energy + plantEnergy;
+        maxEnergy = Math.max(energy,maxEnergy);
     }
 
     public void subtractEnergy(int toSubtract){
@@ -100,8 +101,8 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         days = days + 1;
         int currentGen = genotype.getGenes().get(genotype.getCurrentGen());
         genotype.nextGen();
-        MapDirection newDirection = MapDirection.valueOf(currentGen);
-        Vector2d newPosition =  validator.canMoveTo(position.add(direction.rotate(newDirection)),position);
+        MapDirection newDirection = direction.rotate(MapDirection.valueOf(currentGen));
+        Vector2d newPosition =  validator.canMoveTo(position.add(direction.rotateToVector(newDirection)),position);
         if(newPosition != position) {
             position = newPosition;
             direction = newDirection;

@@ -17,10 +17,6 @@ public class Statistics implements MapChangeListener {
     private double averageChildrenCount;
     private List<Map.Entry<String, Long>> sortedGenotypes;
 
-    public Statistics(){
-
-    }
-
     @Override
     public void mapChanged(WorldMap worldMap) {
         List<Animal> animals = worldMap.getAnimals();

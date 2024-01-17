@@ -66,6 +66,34 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         return childrens.size();
     }
 
+//    public int getDescendants(){
+//        int descendants = childrens.size();
+//        for(Animal animal : childrens){
+//            descendants += animal.getDescendants();
+//        }
+//        return descendants;
+//    }
+
+    public int getDescendants() {
+        Set<Animal> visited = new HashSet<>(); // Przechowuje odwiedzone zwierzęta
+        return getDescendants(this, visited);
+    }
+
+    private int getDescendants(Animal animal, Set<Animal> visited) {
+        if (visited.contains(animal)) {
+            return 0; // Zwierzę było już odwiedzone, więc nie dodajemy potomków
+        }
+
+        visited.add(animal);
+
+        int descendants = childrens.size();
+        for (Animal child : childrens) {
+            descendants += getDescendants(child, visited);
+        }
+
+        return descendants;
+    }
+
     public int getDeathDay() {
         return deathDay;
     }

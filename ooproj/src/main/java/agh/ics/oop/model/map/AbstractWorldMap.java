@@ -168,11 +168,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         }
     }
 
-    public List<MapElement> objectsAt(Vector2d position){
-        //TODO
-        return new LinkedList<>();
-    }
-
     public List<Animal> getAnimals(){
         return new LinkedList<>(animals);
     }
@@ -181,13 +176,15 @@ public abstract class AbstractWorldMap implements WorldMap {
         return new LinkedList<>(plants);
     }
 
-    public List<Tile> getTiles(){
-        return new LinkedList<>(mapTiles.values());
-    }
-
     @Override
     public int getNumberOfFreeTiles() {
-        return tilesWithoutPlantStandard.size() + tilesWithoutPlantEquator.size();
+        int freeTiles = 0;
+        for(Tile tile : mapTiles.values()){
+            if(tile.getAnimal().isEmpty() && tile.getPlant().isEmpty()){
+                freeTiles++;
+            }
+        }
+        return freeTiles;
     }
 
     @Override
@@ -206,11 +203,6 @@ public abstract class AbstractWorldMap implements WorldMap {
         preferredTilesPositions.addAll(tilesWithoutPlantEquator);
         preferredTilesPositions.addAll(tilesWithPlantEquator);
         return preferredTilesPositions;
-    }
-
-    public List<MapElement> getElements(){
-        //TODO
-        return new LinkedList<>();
     }
 
     @Override

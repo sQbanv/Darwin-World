@@ -8,6 +8,7 @@ public class Simulation implements Runnable{
     private final SimulationConfigurator configurator;
     private final Statistics statistics;
     private boolean isPaused = false;
+    private boolean isRunning = true;
 
     public Simulation(SimulationConfigurator configurator, WorldMap map, Statistics statistics){
         this.configurator = configurator;
@@ -18,20 +19,10 @@ public class Simulation implements Runnable{
 
     @Override
     public void run() {
-        while (!map.getAnimals().isEmpty()){
+        while (!map.getAnimals().isEmpty() && isRunning){
             if(!isPaused){
                 map.removeDead();
-                try {
-                    Thread.sleep(100);
-                }catch (InterruptedException e){
-                    throw new RuntimeException(e);
-                }
                 map.move();
-                try {
-                    Thread.sleep(100);
-                }catch (InterruptedException e){
-                    throw new RuntimeException(e);
-                }
                 map.eat();
                 map.reproduce();
                 map.generatePlants(configurator.numberOfPlantsGrowingPerDay());
@@ -57,6 +48,10 @@ public class Simulation implements Runnable{
 
     public void resumeSimulation(){
         isPaused = false;
+    }
+
+    public void stopSimulation(){
+        isRunning = false;
     }
 
     public Statistics getStatistics(){

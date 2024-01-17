@@ -91,15 +91,15 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     public void removeDead() {
         day++; //start of new day
-        Iterator<Animal> intetor = animals.iterator();
-        while (intetor.hasNext()){
-            Animal animal = intetor.next();
+        Iterator<Animal> iterator = animals.iterator();
+        while (iterator.hasNext()){
+            Animal animal = iterator.next();
             if(animal.getEnergy()<=0){
                 mapTiles.get(animal.getPosition()).removeAnimal(animal);
                 averageLifeSpanOfDeadAnimals = (deadAnimalsCount * averageLifeSpanOfDeadAnimals + animal.getDays())/(deadAnimalsCount + 1);
                 deadAnimalsCount++;
                 animal.setDeathDay(day);
-                intetor.remove();
+                iterator.remove();
             }
         }
     }

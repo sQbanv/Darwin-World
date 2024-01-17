@@ -1,16 +1,15 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.SimulationConfigurator;
-import agh.ics.oop.model.MapElement;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.animal.Animal;
 
 import java.util.*;
 
 public class UndergroundTunnels extends AbstractWorldMap {
-    private final HashMap<Vector2d,Vector2d> tilesWithTunnel = new HashMap<>();
+    private final HashMap<Vector2d,Vector2d> tilesWithTunnelFirst = new HashMap<>();
+    private final HashMap<Vector2d,Vector2d> tilesWithTunnelSecond = new HashMap<>();
     private final List<Vector2d> tilesWithoutTunnel = new LinkedList<>();
-
     private Set<Vector2d> wasTunnelUsed = new HashSet<>();
     public UndergroundTunnels(SimulationConfigurator configurator) {
         super(configurator);
@@ -45,8 +44,8 @@ public class UndergroundTunnels extends AbstractWorldMap {
             Vector2d position1 = tilesWithoutTunnel.remove(idx1);
             idx1 = random.nextInt(tilesWithoutTunnel.size());
             Vector2d position2 = tilesWithoutTunnel.remove(idx1);
-            tilesWithTunnel.put(position1,position2);
-//            System.out.println(position2 + " " + position1);
+            tilesWithTunnelFirst.put(position1,position2);
+            tilesWithTunnelSecond.put(position2,position1);
         }
     }
 
@@ -56,18 +55,12 @@ public class UndergroundTunnels extends AbstractWorldMap {
         List<Vector2d> toRemove = new LinkedList<>();
         List<Vector2d> toAdd = new LinkedList<>();
         for(Vector2d position : tilesWithAnimals) {
-            if (!wasTunnelUsed.contains(position) && (tilesWithTunnel.containsKey(position)||tilesWithTunnel.containsValue(position))) {
+            if (!wasTunnelUsed.contains(position) && (tilesWithTunnelFirst.containsKey(position)||tilesWithTunnelSecond.containsKey(position))) {
                 Vector2d position2 = position;
-                if(tilesWithTunnel.containsKey(position)) {
-                    position2 = tilesWithTunnel.get(position);
-                }
-                else {
-                    for(Map.Entry<Vector2d, Vector2d> entry : tilesWithTunnel.entrySet()){
-                        if(entry.getValue().equals(position)){
-                            position2 = entry.getKey();
-                            break;
-                        }
-                    }
+                if(tilesWithTunnelFirst.containsKey(position)) {
+                    position2 = tilesWithTunnelFirst.get(position);
+                } else if (tilesWithTunnelSecond.containsKey(position)) {
+                    position2 = tilesWithTunnelSecond.get(position);
                 }
                 Tile tile1 = mapTiles.get(position);
                 Tile tile2 = mapTiles.get(position2);
@@ -79,8 +72,6 @@ public class UndergroundTunnels extends AbstractWorldMap {
                 for(Animal animal : animals2){
                     animal.setPosition(position);
                 }
-//                System.out.println(tile1.getAnimals() + " " + tile2.getAnimals());
-//                System.out.println(tile1.getPosition() + " " + tile2.getPosition());
                 if (!animals1.isEmpty() && !animals2.isEmpty()) {
                     if(tile2.removeAllAnimals()&&tile1.removeAllAnimals()) {
                         animals1.forEach(tile2::addAnimal);
@@ -99,7 +90,6 @@ public class UndergroundTunnels extends AbstractWorldMap {
                     toRemove.add(position2);
                     toAdd.add(position);
                 }
-//                System.out.println(tile1.getAnimals() + " " + tile2.getAnimals());
                 wasTunnelUsed.add(position);
                 wasTunnelUsed.add(position2);
             }

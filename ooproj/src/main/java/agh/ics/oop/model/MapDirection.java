@@ -31,7 +31,6 @@ public enum MapDirection {
     }
     public Vector2d toUnitVector(){
         return switch(this){
-
             case NORTH -> new Vector2d(0,1);
             case NORTHEAST -> new Vector2d(1,1);
             case EAST -> new Vector2d(1,0);
@@ -41,10 +40,6 @@ public enum MapDirection {
             case WEST -> new Vector2d(-1,0);
             case NORTHWEST -> new Vector2d(-1,1);
         };
-    }
-
-    public MapDirection next(){
-        return values()[(this.ordinal()+1)%8];
     }
 
     public static MapDirection valueOf(int value) {
@@ -70,16 +65,15 @@ public enum MapDirection {
     }
 
     public Vector2d rotate(MapDirection newDirection) {
-        //TO CHANGE
         return switch (this) {
             case NORTH -> newDirection.toUnitVector();
-            case NORTHEAST -> newDirection.next().toUnitVector();
-            case EAST -> newDirection.next().next().toUnitVector();
-            case SOUTHEAST -> newDirection.next().next().next().toUnitVector();
+            case NORTHEAST -> values()[(newDirection.ordinal()+1)%8].toUnitVector();
+            case EAST -> values()[(newDirection.ordinal()+2)%8].toUnitVector();
+            case SOUTHEAST -> values()[(newDirection.ordinal()+3)%8].toUnitVector();
             case SOUTH -> newDirection.toUnitVector().opposite();
-            case SOUTHWEST -> newDirection.next().next().next().next().next().toUnitVector();
-            case WEST -> newDirection.next().next().next().next().next().next().toUnitVector();
-            case NORTHWEST -> newDirection.next().next().next().next().next().next().next().toUnitVector();
+            case SOUTHWEST -> values()[(newDirection.ordinal()+5)%8].toUnitVector();
+            case WEST -> values()[(newDirection.ordinal()+6)%8].toUnitVector();
+            case NORTHWEST -> values()[(newDirection.ordinal()+7)%8].toUnitVector();
         };
     }
 }

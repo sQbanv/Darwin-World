@@ -101,11 +101,11 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
         days = days + 1;
         int currentGen = genotype.getGenes().get(genotype.getCurrentGen());
         genotype.nextGen();
-        MapDirection newDirection = direction.rotate(MapDirection.valueOf(currentGen));
+        MapDirection newDirection = MapDirection.valueOf(currentGen);
         Vector2d newPosition =  validator.canMoveTo(position.add(direction.rotateToVector(newDirection)),position);
         if(newPosition != position) {
             position = newPosition;
-            direction = newDirection;
+            direction = direction.rotate(newDirection);
         }
         else {
             direction = direction.opposite();

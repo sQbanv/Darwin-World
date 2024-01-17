@@ -1,6 +1,8 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.SimulationConfigurator;
+import agh.ics.oop.model.MapElement;
+import agh.ics.oop.model.Tunnel;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.animal.Animal;
 
@@ -11,6 +13,7 @@ public class UndergroundTunnels extends AbstractWorldMap {
     private final HashMap<Vector2d,Vector2d> tilesWithTunnelSecond = new HashMap<>();
     private final List<Vector2d> tilesWithoutTunnel = new LinkedList<>();
     private Set<Vector2d> wasTunnelUsed = new HashSet<>();
+    private final HashMap<Vector2d, Tunnel> tunnels = new HashMap<>();
     public UndergroundTunnels(SimulationConfigurator configurator) {
         super(configurator);
         generateTiles();
@@ -46,6 +49,8 @@ public class UndergroundTunnels extends AbstractWorldMap {
             Vector2d position2 = tilesWithoutTunnel.remove(idx1);
             tilesWithTunnelFirst.put(position1,position2);
             tilesWithTunnelSecond.put(position2,position1);
+            tunnels.put(position1, new Tunnel(position1));
+            tunnels.put(position2, new Tunnel(position2));
         }
     }
 
@@ -99,5 +104,29 @@ public class UndergroundTunnels extends AbstractWorldMap {
         }
         tilesWithAnimals.addAll(toAdd);
         wasTunnelUsed.clear();
+    }
+
+    @Override
+    public Optional<MapElement> objectAt(Vector2d position){
+        if(mapTiles.get(position).getAnimal().isPresent()) {
+            return Optional.of(mapTiles.get(position).getAnimal().get());
+        } else if(tunnels.containsKey(position)){
+            return Optional.of(tunnels.get(position));
+        } else if(mapTiles.get(position).getPlant().isPresent()){
+            return Optional.of(mapTiles.get(position).getPlant().get());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public int getNumberOfFreeTiles() {
+        int freeTiles = 0;
+        for(Tile tile : mapTiles.values()){
+            if(tile.getAnimal().isEmpty() && tile.getPlant().isEmpty() && !tunnels.containsKey(tile.getPosition())){
+                freeTiles++;
+            }
+        }
+        return freeTiles;
     }
 }

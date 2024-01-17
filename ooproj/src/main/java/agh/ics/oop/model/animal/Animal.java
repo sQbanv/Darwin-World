@@ -47,7 +47,7 @@ public class Animal implements MapElement, Movable, Eatable, Reproducible {
 
     @Override
     public void eat(int plantEnergy) {
-        energy = energy + plantEnergy;
+        energy = Math.min(energy + plantEnergy,Integer.MAX_VALUE);
         maxEnergy = Math.max(energy,maxEnergy);
     }
 

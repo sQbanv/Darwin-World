@@ -1,7 +1,9 @@
 package agh.ics.oop.model.map;
 
 import agh.ics.oop.model.MapDirection;
+import agh.ics.oop.model.Plant;
 import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.animal.Animal;
 
 import java.util.*;
 

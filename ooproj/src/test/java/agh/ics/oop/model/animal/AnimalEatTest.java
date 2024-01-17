@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnimalEatTest {
-    Genotype genotype = new RegularGenom(4);
+    Genotype genotype = new RegularGenome(4);
     Vector2d position = new Vector2d(4,4);
     Animal animal1 = new Animal(position,20,genotype,new RegularGenotypeFactory());
 

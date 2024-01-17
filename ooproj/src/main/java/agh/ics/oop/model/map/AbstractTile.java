@@ -165,5 +165,8 @@ public abstract class AbstractTile implements Tile{
         Random random = new Random();
         return (random.nextInt(2)==0) ? animalA : animalB;
     }
+    public Map<Vector2d,Tile> getNeighbourTile(){
+        return neighbourTiles;
+    }
 }
 

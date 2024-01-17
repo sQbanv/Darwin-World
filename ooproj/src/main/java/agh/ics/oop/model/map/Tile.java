@@ -20,4 +20,5 @@ public interface Tile extends MoveValidator {
     void removeAnimal(Animal animal);
     List<Animal> getAnimals();
     boolean removeAllAnimals();
+    Map<Vector2d,Tile> getNeighbourTile();
 }

@@ -43,6 +43,9 @@
                 </VBox>
                 <VBox fx:id="clickedAnimalInfo" spacing="5">
                 </VBox>
+                <VBox spacing="5">
+                    <Button fx:id="clearButton" text="Clear" minWidth="100" onAction="#clearClickedAnimal" visible="false"/>
+                </VBox>
             </VBox>
             <GridPane fx:id="mapGrid" alignment="CENTER" gridLinesVisible="true"/>
         </HBox>

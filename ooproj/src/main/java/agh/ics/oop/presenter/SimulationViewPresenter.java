@@ -49,6 +49,8 @@ public class SimulationViewPresenter implements MapChangeListener{
     private VBox clickedAnimalInfo;
     @FXML
     private HBox pauseButtons;
+    @FXML
+    private Button clearButton;
 
     private WorldMap worldMap;
     private Simulation simulation;
@@ -142,10 +144,18 @@ public class SimulationViewPresenter implements MapChangeListener{
             clickedAnimalInfo.getChildren().add(new Label("Potomkowie: " + clickedAnimal.get().getDescendants()));
             if(clickedAnimal.get().getDeathDay() == 0){
                 clickedAnimalInfo.getChildren().add(new Label("Dni: " + clickedAnimal.get().getDays()));
+                markTile(clickedAnimal.get().getPosition(), new Color(1,0,0,0.5));
             } else {
                 clickedAnimalInfo.getChildren().add(new Label("Dzien smierci: " + clickedAnimal.get().getDeathDay()));
             }
+            clearButton.setVisible(true);
         }
+    }
+
+    public void clearClickedAnimal(){
+        clickedAnimalInfo.getChildren().clear();
+        clickedAnimal = Optional.empty();
+        clearButton.setVisible(false);
     }
 
     public void setPauseButtons(){

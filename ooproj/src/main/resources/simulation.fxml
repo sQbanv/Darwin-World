@@ -10,9 +10,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.CheckBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            minHeight="550.0" minWidth="850.0"
+            minHeight="630.0" minWidth="900.0"
             fx:controller="agh.ics.oop.presenter.SimulationPresenter">
 
     <VBox spacing="10">
@@ -20,12 +21,12 @@
 
         <HBox spacing="10">
             <Label text="Wysokość mapy:" minWidth="400"/>
-            <Spinner fx:id="mapHeightField" min="10" max="100" initialValue="10" minWidth="250" />
+            <Spinner fx:id="mapHeightField" min="5" max="70" initialValue="10" minWidth="250" />
         </HBox>
 
         <HBox spacing="10">
             <Label text="Szerokość mapy:" minWidth="400"/>
-            <Spinner fx:id="mapWidthField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="mapWidthField" min="5" max="70" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
@@ -44,48 +45,53 @@
         </HBox>
 
         <HBox spacing="10">
+            <Label text="Startowa liczba tuneli: " minWidth="400"/>
+            <Spinner fx:id="initialTunnelCountField" min="1" max="3600" initialValue="2" minWidth="250"/>
+        </HBox>
+
+        <HBox spacing="10">
             <Label text="Startowa liczba roślin:" minWidth="400"/>
-            <Spinner fx:id="initialPlantCountField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="initialPlantCountField" min="0" max="3600" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Energia zapewniana przez zjedzenie jednej rośliny:" minWidth="400"/>
-            <Spinner fx:id="plantEnergyField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="plantEnergyField" min="1" max="1000" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Liczba roślin wyrastająca każdego dnia:" minWidth="400"/>
-            <Spinner fx:id="numberOfPlantsGrowingPerDayField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="numberOfPlantsGrowingPerDayField" min="0" max="3600" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Startowa liczba zwierzaków:" minWidth="400"/>
-            <Spinner fx:id="initialAnimalCountField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="initialAnimalCountField" min="2" max="3600" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Startowa energia zwierzaków:" minWidth="400"/>
-            <Spinner fx:id="initialAnimalEnergyField" min="10" max="400" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="initialAnimalEnergyField" min="2" max="1000" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Energia konieczna, by uznać zwierzaka za najedzonego:" minWidth="400"/>
-            <Spinner fx:id="readyToReproduceEnergyField" min="10" max="200" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="readyToReproduceEnergyField" min="1" max="999" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Energia rodziców zużywana by stworzyć potomka:" minWidth="400"/>
-            <Spinner fx:id="reproduceEnergyLossField" min="10" max="100" initialValue="10" minWidth="250"/>
+            <Spinner fx:id="reproduceEnergyLossField" min="1" max="999" initialValue="10" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Minimalna liczba mutacji u potomków:" minWidth="400"/>
-            <Spinner fx:id="minMutationCountField" min="10" max="100" initialValue="0" minWidth="250"/>
+            <Spinner fx:id="minMutationCountField" min="0" max="100" initialValue="0" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
             <Label text="Maksymalna liczba mutacji u potomków:" minWidth="400"/>
-            <Spinner fx:id="maxMutationCountField" min="10" max="100" initialValue="4" minWidth="250"/>
+            <Spinner fx:id="maxMutationCountField" min="0" max="100" initialValue="4" minWidth="250"/>
         </HBox>
 
         <HBox spacing="10">
@@ -105,10 +111,18 @@
 
         <HBox spacing="10">
             <Label text="Długość genomu zwierzaków:" minWidth="400"/>
-            <Spinner fx:id="genotypeLengthField" min="10" max="100" initialValue="8" minWidth="250"/>
+            <Spinner fx:id="genotypeLengthField" min="2" max="15" initialValue="8" minWidth="250"/>
         </HBox>
 
-        <Button text="Uruchom symulację" onAction="#onSimulationStartClicked" minWidth="200"/>
+        <HBox spacing="10">
+            <Label text="Zapis statystyk każdego dnia do pliku CSV: " minWidth="400"/>
+            <CheckBox fx:id="saveToCSV" />
+        </HBox>
+
+        <HBox>
+            <Button text="Zapisz" onAction="#saveConfig" minWidth="200"/>
+            <Button text="Uruchom symulację" onAction="#onSimulationStartClicked" minWidth="200"/>
+        </HBox>
     </VBox>
 
 
